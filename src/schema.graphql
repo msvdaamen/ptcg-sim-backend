@@ -2,11 +2,72 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type ImageEntity {
+  id: Int!
+  name: String!
+  filename: String!
+  url: String!
+}
+
+type CardEntity {
+  id: Int!
+  name: String!
+  hp: String
+  number: String
+  nationalPokedexNumber: Float
+  description: String
+  image: ImageEntity
+  imageHRes: ImageEntity
+  hasCard: Boolean!
+}
+
+type AuthUser {
+  id: Float!
+  email: String!
+  accessToken: String!
+}
+
+type PaginationModel {
+  total: Float!
+  count: Float!
+  perPage: Float!
+  currentPage: Float!
+  totalPages: Float!
+}
+
+type CardPaginationModel {
+  cards: [CardEntity!]!
+  pagination: PaginationModel!
+}
+
 type Query {
   hello: String!
+  cardsPaginated(pagination: PaginationArgs!, filter: CardFilterInput): CardPaginationModel!
+  myCards: [CardEntity!]!
+}
+
+input PaginationArgs {
+  page: Float!
+  amount: Float!
+}
+
+input CardFilterInput {
+  name: String
+  rarity: Int
 }
 
 type Mutation {
-  login: String!
-  register: String!
+  login(loginCredentials: LoginInput!): AuthUser!
+  register(registerCredentials: RegisterInput!): AuthUser!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input RegisterInput {
+  email: String!
+  password: String!
+  passwordConfirmation: String!
 }

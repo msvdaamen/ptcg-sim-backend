@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import {getRepository} from "typeorm";
 import {jwtConstants} from "../common/constants/jwt.constants";
+import {UserEntity} from "../models/users/entities/user.entity";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -14,12 +15,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         });
     }
 
-    // async validate(payload: any): Promise<User> {
-    //     return getRepository(User).findOne({
-    //         where: {
-    //             id: payload.id,
-    //             email: payload.email
-    //         }
-    //     });
-    // }
+    async validate(payload: {id: number, email: string}): Promise<UserEntity> {
+        return getRepository(UserEntity).findOne({
+            where: {
+                id: payload.id,
+                email: payload.email
+            }
+        });
+    }
 }

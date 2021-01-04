@@ -4,9 +4,14 @@ import {AuthResolver} from "./auth.resolver";
 import {JwtModule} from "@nestjs/jwt";
 import {jwtConstants} from "../common/constants/jwt.constants";
 import {JwtStrategy} from "./jwt.strategy";
+import {TypeOrmModule} from "@nestjs/typeorm";
+import {UserEntity} from "../models/users/entities/user.entity";
+import {UserRepository} from "../models/users/user.repository";
+import {CardRepository} from "../models/cards/card.repository";
 
 @Module({
     imports: [
+        TypeOrmModule.forFeature([UserEntity, UserRepository, CardRepository]),
         JwtModule.register({
             secret: jwtConstants.secret,
             signOptions: { expiresIn: '8h' },

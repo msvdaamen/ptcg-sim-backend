@@ -7,6 +7,8 @@ import {MysqlDatabaseProviderModule} from "./providers/database/mysql/mysql-data
 import {AppResolver} from "./app.resolver";
 import {AuthModule} from "./authemtication/auth.module";
 import {UsersModule} from "./models/users/users.module";
+import {CardsModule} from "./models/cards/cards.module";
+import {ImagesModule} from "./models/images/images.module";
 
 
 @Module({
@@ -27,7 +29,9 @@ import {UsersModule} from "./models/users/users.module";
       isGlobal: true
     }),
     AuthModule,
-    UsersModule
+    UsersModule,
+    CardsModule,
+    ImagesModule
   ],
   providers: [
     AppService,
