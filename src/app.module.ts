@@ -5,10 +5,11 @@ import {join} from 'path';
 import {ConfigModule} from "@nestjs/config";
 import {MysqlDatabaseProviderModule} from "./providers/database/mysql/mysql-database-provider.module";
 import {AppResolver} from "./app.resolver";
-import {AuthModule} from "./authemtication/auth.module";
+import {AuthModule} from "./authorization/auth.module";
 import {UsersModule} from "./models/users/users.module";
 import {CardsModule} from "./models/cards/cards.module";
 import {ImagesModule} from "./models/images/images.module";
+import {RaritiesModule} from "./models/rarities/rarities.module";
 
 
 @Module({
@@ -31,7 +32,8 @@ import {ImagesModule} from "./models/images/images.module";
     AuthModule,
     UsersModule,
     CardsModule,
-    ImagesModule
+    ImagesModule,
+    RaritiesModule
   ],
   providers: [
     AppService,

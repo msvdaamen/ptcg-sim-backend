@@ -19,6 +19,7 @@ type CardEntity {
   image: ImageEntity
   imageHRes: ImageEntity
   hasCard: Boolean!
+  amount: Float!
 }
 
 type AuthUser {
@@ -40,10 +41,16 @@ type CardPaginationModel {
   pagination: PaginationModel!
 }
 
+type RarityEntity {
+  id: Int!
+  name: String!
+}
+
 type Query {
   hello: String!
   cardsPaginated(pagination: PaginationArgs!, filter: CardFilterInput): CardPaginationModel!
   myCards: [CardEntity!]!
+  rarities: [RarityEntity!]!
 }
 
 input PaginationArgs {

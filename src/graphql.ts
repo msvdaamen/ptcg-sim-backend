@@ -44,6 +44,7 @@ export interface CardEntity {
     image?: ImageEntity;
     imageHRes?: ImageEntity;
     hasCard: boolean;
+    amount: number;
 }
 
 export interface AuthUser {
@@ -65,10 +66,16 @@ export interface CardPaginationModel {
     pagination: PaginationModel;
 }
 
+export interface RarityEntity {
+    id: number;
+    name: string;
+}
+
 export interface IQuery {
     hello(): string | Promise<string>;
     cardsPaginated(pagination: PaginationArgs, filter?: CardFilterInput): CardPaginationModel | Promise<CardPaginationModel>;
     myCards(): CardEntity[] | Promise<CardEntity[]>;
+    rarities(): RarityEntity[] | Promise<RarityEntity[]>;
 }
 
 export interface IMutation {

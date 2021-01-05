@@ -1,12 +1,10 @@
-import {Inject, Injectable, Scope} from "@nestjs/common";
+import {Injectable, Scope} from "@nestjs/common";
 import * as DataLoader from "dataloader";
 import {ImageEntity} from "../images/entities/image.entity";
 import {getRepository} from "typeorm";
 import {CardEntity} from "./entities/card.entity";
 import {DataLoaderHelper} from "../../common/helpers/data-loader.helper";
-import {REQUEST} from "@nestjs/core";
-import {UserEntity} from "../users/entities/user.entity";
-
+import {UserHasCardEntity} from "../users/entities/user-has-card.entity";
 
 @Injectable({
     scope: Scope.REQUEST
@@ -15,7 +13,8 @@ export class CardsDataLoader {
 
     private _imageDataLoader: DataLoader<number, ImageEntity>;
     private _imageHResDataLoader: DataLoader<number, ImageEntity>;
-    private _hasCardDataLoader: DataLoader<{userId: number, cardId: number}, boolean>;
+    private _hasCardDataLoader: DataLoader<number, boolean>;
+    private _cardAmountDataLoader: DataLoader<number, number>;
 
     get image() {
         if (!this._imageDataLoader) {
@@ -31,11 +30,18 @@ export class CardsDataLoader {
         return this._imageHResDataLoader;
     }
 
-    get hasCard() {
+    hasCard(userId: number) {
         if (!this._hasCardDataLoader) {
-            this.createHasCardDataLoader();
+            this.createHasCardDataLoader(userId);
         }
         return this._hasCardDataLoader;
+    }
+
+    amount(userId: number) {
+        if (!this._cardAmountDataLoader) {
+            this.createCardAmountDataLoader(userId);
+        }
+        return this._cardAmountDataLoader;
     }
 
     private createImageDataLoader() {
@@ -70,15 +76,36 @@ export class CardsDataLoader {
         });
     }
 
-    private createHasCardDataLoader() {
-        this._hasCardDataLoader = new DataLoader(async (payload) => {
-            console.log(payload);
+    private createHasCardDataLoader(userId: number) {
+        this._hasCardDataLoader = new DataLoader(async (cardIds: number[]) => {
+            const cards = await getRepository(UserHasCardEntity)
+                .createQueryBuilder('userHasCard')
+                .where('userHasCard.userId = :userId and userHasCard.cardId IN (:...cardIds)', {userId, cardIds})
+                .groupBy('userHasCard.cardId')
+                .getMany();
 
-            return payload.map(() => false);
-        }, {
-            cacheKeyFn: key => {
-                return `${key.userId}|${key.cardId}`
+            const cardHasUserMap = DataLoaderHelper.createMap<number, boolean>(false);
+            for (const card of cards) {
+                cardHasUserMap.add(card.cardId, true);
             }
+            return cardHasUserMap.getAll(cardIds);
+        });
+    }
+
+    private createCardAmountDataLoader(userId: number) {
+        this._cardAmountDataLoader = new DataLoader(async (cardIds: number[]) => {
+            const cards = await getRepository(UserHasCardEntity)
+                .createQueryBuilder('userHasCard')
+                .select('userHasCard.cardId as cardId, COUNT(userHasCard.cardId) as amount')
+                .where('userHasCard.userId = :userId and userHasCard.cardId IN (:...cardIds)', {userId, cardIds})
+                .groupBy('userHasCard.cardId')
+                .execute();
+
+            const cardHasUserMap = DataLoaderHelper.createMap<number, number>(0);
+            for (const card of cards) {
+                cardHasUserMap.add(card.cardId, card.amount);
+            }
+            return cardHasUserMap.getAll(cardIds);
         });
     }
 }

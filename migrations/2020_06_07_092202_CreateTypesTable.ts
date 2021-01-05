@@ -6,7 +6,7 @@ import {Schema} from 'migrationjs';
 export default class CreateTypesTable extends Migration {
 
     async up() {
-        await Schema.create('types', (table: Blueprint) => {
+        await Schema.create('card_types', (table: Blueprint) => {
            table.id();
            table.string('name').unique();
         });

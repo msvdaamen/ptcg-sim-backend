@@ -43,7 +43,6 @@ export class CardsResolver {
         return this.cardsDataLoader.imageHRes.load(card.id);
     }
 
-    @UseGuards(JwtAuthGuard)
     @Query(() => [CardEntity])
     myCards(
         @CurrentUser() user: UserEntity
@@ -52,12 +51,20 @@ export class CardsResolver {
     }
 
     @ResolveProperty(() => Boolean)
-
     hasCard(
         @CurrentUser() user: UserEntity,
         @Parent() card: CardEntity
     ) {
-        return false;
-        // return this.cardsDataLoader.hasCard.load({userId: user.id, cardId: card.id});
+        return this.cardsDataLoader.hasCard(user.id).load(card.id);
     }
+
+    @ResolveProperty(() => Number)
+    amount(
+        @CurrentUser() user: UserEntity,
+        @Parent() card: CardEntity
+    ) {
+        return this.cardsDataLoader.amount(user.id).load(card.id);
+    }
+
+
 }
