@@ -71,11 +71,23 @@ export interface RarityEntity {
     name: string;
 }
 
+export interface CardTypeEntity {
+    id: number;
+    name: string;
+}
+
+export interface PokemonTypeEntity {
+    id: number;
+    name: string;
+}
+
 export interface IQuery {
     hello(): string | Promise<string>;
     cardsPaginated(pagination: PaginationArgs, filter?: CardFilterInput): CardPaginationModel | Promise<CardPaginationModel>;
     myCards(): CardEntity[] | Promise<CardEntity[]>;
     rarities(): RarityEntity[] | Promise<RarityEntity[]>;
+    cardTypes(): CardTypeEntity[] | Promise<CardTypeEntity[]>;
+    pokemonTypes(): PokemonTypeEntity[] | Promise<PokemonTypeEntity[]>;
 }
 
 export interface IMutation {

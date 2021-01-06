@@ -46,11 +46,23 @@ type RarityEntity {
   name: String!
 }
 
+type CardTypeEntity {
+  id: Int!
+  name: String!
+}
+
+type PokemonTypeEntity {
+  id: Int!
+  name: String!
+}
+
 type Query {
   hello: String!
   cardsPaginated(pagination: PaginationArgs!, filter: CardFilterInput): CardPaginationModel!
   myCards: [CardEntity!]!
   rarities: [RarityEntity!]!
+  cardTypes: [CardTypeEntity!]!
+  pokemonTypes: [PokemonTypeEntity!]!
 }
 
 input PaginationArgs {

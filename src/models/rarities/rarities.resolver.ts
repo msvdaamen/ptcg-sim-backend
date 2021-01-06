@@ -14,7 +14,7 @@ export class RaritiesResolver {
     }
 
     @Query(() => [RarityEntity])
-    rarities(): Promise<RarityEntity[]> {
+    rarities() {
         return this.raritiesService.all();
     }
 }

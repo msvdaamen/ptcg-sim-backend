@@ -10,6 +10,8 @@ import {UsersModule} from "./models/users/users.module";
 import {CardsModule} from "./models/cards/cards.module";
 import {ImagesModule} from "./models/images/images.module";
 import {RaritiesModule} from "./models/rarities/rarities.module";
+import {CardTypesModule} from "./models/card-types/card-types.module";
+import {PokemonTypesModule} from "./models/pokemon-types/pokemon-types.module";
 
 
 @Module({
@@ -33,7 +35,9 @@ import {RaritiesModule} from "./models/rarities/rarities.module";
     UsersModule,
     CardsModule,
     ImagesModule,
-    RaritiesModule
+    RaritiesModule,
+    CardTypesModule,
+    PokemonTypesModule
   ],
   providers: [
     AppService,
