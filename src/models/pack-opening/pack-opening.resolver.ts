@@ -3,6 +3,8 @@ import {PackOpeningService} from "./pack-opening.service";
 import {CardEntity} from "../cards/entities/card.entity";
 import {UseGuards} from "@nestjs/common";
 import {JwtAuthGuard} from "../../common/guards/jwt-auth.guard";
+import {CurrentUser} from "../../common/decorators/current-user";
+import {UserEntity} from "../users/entities/user.entity";
 
 @UseGuards(JwtAuthGuard)
 @Resolver()
@@ -14,7 +16,9 @@ export class PackOpeningResolver {
     }
 
     @Mutation(() => [CardEntity])
-    openPack() {
-        return this.packOpeningService.open();
+    openPack(
+        @CurrentUser() user: UserEntity
+    ) {
+        return this.packOpeningService.open(user.id);
     }
 }

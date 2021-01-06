@@ -47,9 +47,11 @@ export class CardsService {
 
     myCards(userId: number) {
         return this.cardRepository.createQueryBuilder('cards')
+            .addSelect('COUNT(userHasCard.card_id) as amount')
             .innerJoin('user_has_card', 'userHasCard', 'userHasCard.user_id = :userId', {userId})
             .where('cards.id = userHasCard.card_id')
             .groupBy('userHasCard.card_id')
+            .orderBy('amount', 'DESC')
             .getMany();
     }
 
