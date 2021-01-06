@@ -34,6 +34,12 @@ export interface ImageEntity {
     url: string;
 }
 
+export interface RarityEntity {
+    id: number;
+    name: string;
+    value: number;
+}
+
 export interface CardEntity {
     id: number;
     name: string;
@@ -43,6 +49,7 @@ export interface CardEntity {
     description?: string;
     image?: ImageEntity;
     imageHRes?: ImageEntity;
+    rarity: RarityEntity;
     hasCard: boolean;
     amount: number;
 }
@@ -64,11 +71,6 @@ export interface PaginationModel {
 export interface CardPaginationModel {
     cards: CardEntity[];
     pagination: PaginationModel;
-}
-
-export interface RarityEntity {
-    id: number;
-    name: string;
 }
 
 export interface CardTypeEntity {

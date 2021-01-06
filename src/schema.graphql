@@ -9,6 +9,12 @@ type ImageEntity {
   url: String!
 }
 
+type RarityEntity {
+  id: Int!
+  name: String!
+  value: Float!
+}
+
 type CardEntity {
   id: Int!
   name: String!
@@ -18,6 +24,7 @@ type CardEntity {
   description: String
   image: ImageEntity
   imageHRes: ImageEntity
+  rarity: RarityEntity!
   hasCard: Boolean!
   amount: Float!
 }
@@ -39,11 +46,6 @@ type PaginationModel {
 type CardPaginationModel {
   cards: [CardEntity!]!
   pagination: PaginationModel!
-}
-
-type RarityEntity {
-  id: Int!
-  name: String!
 }
 
 type CardTypeEntity {

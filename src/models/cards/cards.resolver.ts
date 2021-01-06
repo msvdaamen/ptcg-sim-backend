@@ -10,6 +10,7 @@ import {CardsDataLoader} from "./cards.data-loader";
 import {ImageEntity} from "../images/entities/image.entity";
 import {CurrentUser} from "../../common/decorators/current-user";
 import {UserEntity} from "../users/entities/user.entity";
+import {RarityEntity} from "../rarities/entities/rarity.entity";
 
 @UseGuards(JwtAuthGuard)
 @Resolver(CardEntity)
@@ -43,6 +44,13 @@ export class CardsResolver {
         return this.cardsDataLoader.imageHRes.load(card.id);
     }
 
+    @ResolveProperty(() => RarityEntity)
+    rarity(
+        @Parent() card: CardEntity
+    ) {
+        return this.cardsDataLoader.rarity.load(card.id);
+    }
+
     @Query(() => [CardEntity])
     myCards(
         @CurrentUser() user: UserEntity
@@ -65,6 +73,7 @@ export class CardsResolver {
     ) {
         return this.cardsDataLoader.amount(user.id).load(card.id);
     }
+
 
 
 }

@@ -5,6 +5,8 @@ import {getRepository} from "typeorm";
 import {CardEntity} from "./entities/card.entity";
 import {DataLoaderHelper} from "../../common/helpers/data-loader.helper";
 import {UserHasCardEntity} from "../users/entities/user-has-card.entity";
+import {RarityEntity} from "../rarities/entities/rarity.entity";
+import {RarityRepository} from "../rarities/rarity.repository";
 
 @Injectable({
     scope: Scope.REQUEST
@@ -13,6 +15,8 @@ export class CardsDataLoader {
 
     private _imageDataLoader: DataLoader<number, ImageEntity>;
     private _imageHResDataLoader: DataLoader<number, ImageEntity>;
+    private _rarityDataLoader: DataLoader<number, RarityEntity>;
+
     private _hasCardDataLoader: DataLoader<number, boolean>;
     private _cardAmountDataLoader: DataLoader<number, number>;
 
@@ -28,6 +32,13 @@ export class CardsDataLoader {
             this.createHResImageDataLoader();
         }
         return this._imageHResDataLoader;
+    }
+
+    get rarity() {
+        if (!this._rarityDataLoader) {
+            this.createRarityDataLoader();
+        }
+        return this._rarityDataLoader;
     }
 
     hasCard(userId: number) {
@@ -73,6 +84,20 @@ export class CardsDataLoader {
                 }
             }
             return cardToImage.getAll(cardsId);
+        });
+    }
+
+    private createRarityDataLoader() {
+        this._rarityDataLoader = new DataLoader<number, RarityEntity>(async (cardsId: number[]) => {
+            const cards = await getRepository(CardEntity).createQueryBuilder('cards')
+                .leftJoinAndSelect('cards.rarity', 'rarity')
+                .where('cards.id IN(:...ids)', {ids: cardsId})
+                .getMany();
+            const cardToRarity = DataLoaderHelper.createMap<number, RarityEntity>();
+            for (const card of cards) {
+                cardToRarity.add(card.id, card.rarity);
+            }
+            return cardToRarity.getAll(cardsId);
         });
     }
 

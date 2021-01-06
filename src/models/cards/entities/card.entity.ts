@@ -1,6 +1,7 @@
 import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Field, Int, ObjectType} from "@nestjs/graphql";
 import {ImageEntity} from "../../images/entities/image.entity";
+import {RarityEntity} from "../../rarities/entities/rarity.entity";
 
 @ObjectType()
 @Entity('cards')
@@ -64,6 +65,10 @@ export class CardEntity {
     // @Column({name: 'ancient_trait', nullable: true})
     // ancientTrait: string;
     //
+
+    @ManyToOne(() => RarityEntity, rarity => rarity.cards)
+    @JoinColumn({name: 'rarity_id'})
+    rarity: RarityEntity;
 
     @ManyToOne(() => ImageEntity, image => image.card)
     @JoinColumn({name: 'image_id'})
