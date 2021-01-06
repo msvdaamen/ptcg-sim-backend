@@ -12,6 +12,7 @@ import {ImagesModule} from "./models/images/images.module";
 import {RaritiesModule} from "./models/rarities/rarities.module";
 import {CardTypesModule} from "./models/card-types/card-types.module";
 import {PokemonTypesModule} from "./models/pokemon-types/pokemon-types.module";
+import {PackOpeningModule} from "./models/pack-opening/pack-opening.module";
 
 
 @Module({
@@ -37,7 +38,8 @@ import {PokemonTypesModule} from "./models/pokemon-types/pokemon-types.module";
     ImagesModule,
     RaritiesModule,
     CardTypesModule,
-    PokemonTypesModule
+    PokemonTypesModule,
+    PackOpeningModule
   ],
   providers: [
     AppService,

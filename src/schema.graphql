@@ -78,6 +78,7 @@ input CardFilterInput {
 type Mutation {
   login(loginCredentials: LoginInput!): AuthUser!
   register(registerCredentials: RegisterInput!): AuthUser!
+  openPack: [CardEntity!]!
 }
 
 input LoginInput {

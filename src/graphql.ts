@@ -93,4 +93,5 @@ export interface IQuery {
 export interface IMutation {
     login(loginCredentials: LoginInput): AuthUser | Promise<AuthUser>;
     register(registerCredentials: RegisterInput): AuthUser | Promise<AuthUser>;
+    openPack(): CardEntity[] | Promise<CardEntity[]>;
 }
