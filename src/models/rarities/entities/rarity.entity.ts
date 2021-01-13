@@ -14,9 +14,8 @@ export class RarityEntity {
     @Column()
     name: string;
 
-    @Field(() => Float)
-    @Column({type: "double"})
-    value: number;
+    @Column()
+    weight: number;
 
     @OneToMany(() => CardEntity, card => card.rarity)
     cards: CardEntity[];

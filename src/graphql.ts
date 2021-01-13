@@ -37,7 +37,6 @@ export interface ImageEntity {
 export interface RarityEntity {
     id: number;
     name: string;
-    value: number;
 }
 
 export interface CardEntity {

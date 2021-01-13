@@ -7,7 +7,7 @@ export default class AlterRaritiesTableAddValue extends Migration {
 
     async up() {
         await Schema.table('rarities', (table) => {
-            table.double('value', 4, 3).default(1).after('name');
+            table.unsignedMediumInteger('weight').default(100).after('name');
         })
     }
 
