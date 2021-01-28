@@ -1,4 +1,4 @@
-import {Args, Int, Parent, Query, ResolveField, Resolver} from "@nestjs/graphql";
+import {Args, Int, Mutation, Parent, Query, ResolveField, Resolver} from "@nestjs/graphql";
 import {UseGuards} from "@nestjs/common";
 import {CardEntity} from "./entities/card.entity";
 import {CardsService} from "./cards.service";
@@ -11,6 +11,8 @@ import {ImageEntity} from "../images/entities/image.entity";
 import {CurrentUser} from "../../common/decorators/current-user";
 import {UserEntity} from "../users/entities/user.entity";
 import {RarityEntity} from "../rarities/entities/rarity.entity";
+import {QuickSellCardInput} from "./inputs/quick-sell-card.input";
+import {CardQuickSellModel} from "./models/card-quick-sell.model";
 
 @UseGuards(JwtAuthGuard)
 @Resolver(CardEntity)
@@ -44,6 +46,23 @@ export class CardsResolver {
         @Args('pagination') {page, amount}: PaginationArgs
     ): Promise<CardPaginationModel> {
         return this.cardsService.myCards(user.id, page, amount, cardFilter);
+    }
+
+    @Mutation(() => CardQuickSellModel)
+    quickSellCard(
+        @CurrentUser() user: UserEntity,
+        @Args('cardInfo') {cardId, amount}: QuickSellCardInput
+    ) {
+        return this.cardsService.quickSell(user.id, cardId, amount);
+    }
+
+    @Mutation(() => CardEntity)
+    sellCard(
+        @CurrentUser() user: UserEntity,
+        @Args('cardId', {type: () => Int}) cardId: number,
+        @Args('price', {type: () => Int}) price: number
+    ) {
+        return this.cardsService.sell(user.id, cardId, price);
     }
 
     @ResolveField(() => ImageEntity, {nullable: true})
@@ -82,7 +101,4 @@ export class CardsResolver {
     ) {
         return this.cardsDataLoader.amount(user.id).load(card.id);
     }
-
-
-
 }

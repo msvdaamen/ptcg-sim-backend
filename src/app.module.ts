@@ -13,6 +13,7 @@ import {RaritiesModule} from "./models/rarities/rarities.module";
 import {CardTypesModule} from "./models/card-types/card-types.module";
 import {PokemonTypesModule} from "./models/pokemon-types/pokemon-types.module";
 import {PackOpeningModule} from "./models/pack-opening/pack-opening.module";
+import {ExchangeModule} from "./models/exchange/exchange.module";
 
 
 @Module({
@@ -39,7 +40,8 @@ import {PackOpeningModule} from "./models/pack-opening/pack-opening.module";
     RaritiesModule,
     CardTypesModule,
     PokemonTypesModule,
-    PackOpeningModule
+    PackOpeningModule,
+    ExchangeModule
   ],
   providers: [
     AppService,

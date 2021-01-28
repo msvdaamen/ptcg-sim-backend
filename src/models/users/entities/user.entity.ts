@@ -15,4 +15,7 @@ export class UserEntity {
 
     @Column()
     password: string;
+
+    @Column()
+    balance: number;
 }

@@ -1,14 +1,24 @@
-import {Injectable} from "@nestjs/common";
+import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import {CardRepository} from "./card.repository";
 import {PaginationModel} from "../../common/graphql/models/pagination.model";
 import {CardPaginationModel} from "../../common/graphql/models/card-pagination.model";
 import {CardFilterInput} from "./inputs/card-filter-input";
+import {UserHasCardRepository} from "../users/user-has-card.repository";
+import {CardQuickSellModel} from "./models/card-quick-sell.model";
+import {OrderRepository} from "../exchange/orders/order.repository";
+import {UserRepository} from "../users/user.repository";
+import {CardEntity} from "./entities/card.entity";
+import {getConnection} from "typeorm";
+import {UserEntity} from "../users/entities/user.entity";
 
 @Injectable()
 export class CardsService {
 
     constructor(
-        private readonly cardRepository: CardRepository
+        private readonly cardRepository: CardRepository,
+        private readonly userHasCardRepository: UserHasCardRepository,
+        private readonly orderRepository: OrderRepository,
+        private readonly userRepository: UserRepository
     ) {
     }
 
@@ -89,6 +99,67 @@ export class CardsService {
             cards,
             pagination
         };
+    }
+
+    async quickSell(userId: number, cardId: number, amount: number): Promise<CardQuickSellModel> {
+        const value = 1;
+        const [
+            {affected},
+            card
+        ] = await Promise.all([
+            this.userHasCardRepository
+                .createQueryBuilder('userHasCard')
+                .where('userHasCard.userId = :userId AND userHasCard.cardId = :cardId', {userId, cardId})
+                .limit(amount)
+                .delete()
+                .execute(),
+            this.cardRepository.findOne({id: cardId})
+        ]);
+        if (!affected) {
+            throw new HttpException('No cards are sold',  HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        const coins = value * affected;
+        await getConnection().transaction(async manager => {
+            const user = await manager.findOne(UserEntity, {id: userId});
+            const newBalance = manager.create(UserEntity, {
+                ...user,
+                balance: user.balance + coins
+            })
+            await manager.save(newBalance);
+        });
+        return {
+            card,
+            value: coins
+        };
+    }
+
+    async sell(userId: number, cardId: number, price: number): Promise<CardEntity> {
+        const {affected} = await this.userHasCardRepository
+            .createQueryBuilder('userHasCard')
+            .where('userHasCard.userId = :userId AND userHasCard.cardId = :cardId', {userId, cardId})
+            .limit(1)
+            .delete()
+            .execute();
+        if (!affected) {
+            throw new HttpException(`You don't have that card`,  HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        const now = new Date();
+        const expireDate = new Date().setHours(now.getHours() + 4);
+        const createOrder = this.orderRepository.create({
+            userId,
+            cardId,
+            price,
+            createdAt: now,
+            expireDate
+        });
+        const [
+            order,
+            card
+        ] = await Promise.all([
+            this.orderRepository.save(createOrder),
+            this.cardRepository.findOne({id:  cardId})
+        ]);
+        return card;
     }
 
 }

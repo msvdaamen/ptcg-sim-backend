@@ -37,7 +37,7 @@
     "dataloader": "^2.0.0",
     "graphql": "^15.4.0",
     "graphql-tools": "^7.0.2",
-    "migrationjs": "^0.3.7",
+    "migrationjs": "^0.3.13",
     "mysql": "^2.18.1",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",

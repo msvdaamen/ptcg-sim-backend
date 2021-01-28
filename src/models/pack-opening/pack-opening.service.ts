@@ -32,17 +32,10 @@ export class PackOpeningService {
         let currentIndex = 0;
         rarities.forEach((rarity) => {
             for (let i = 0; i < rarity.weight; i++) {
-                lootTable[currentIndex] = rarity.name;
+                lootTable[currentIndex] = rarity.id;
                 currentIndex++;
             }
         });
-
-        const loots = this.changeCalculations(lootTable, 500000);
-        for (const loot of loots) {
-            console.log(`${loot.name}: ${loot.percentage}%`);
-        }
-        console.log('-----------------------------------------------');
-        return [];
 
         const cardTypes: {[rarityId: number]: number} = {};
         for (let i = 0; i < 12; i++) {
@@ -76,7 +69,7 @@ export class PackOpeningService {
         return cards;
     }
 
-    private changeCalculations(lootTable: any[], runs: number): {name: string, percentage: number}[] {
+    private changeCalculations(lootTable: any[], runs: number): {name: string, percentage: number, amount: number}[] {
         const picked: {[key: string]: number} = {};
         for (let i = 0; i < runs; i++) {
             const randomIndex = NumberUtil.randomBetween(0, lootTable.length - 1);
@@ -91,7 +84,7 @@ export class PackOpeningService {
         for (const key in picked) {
             const amount = picked[key];
             const percentage = Math.floor(amount / runs * 100 * 100) / 100;
-            percentageArray.push({name: key, percentage});
+            percentageArray.push({name: key, percentage, amount: `${amount} / ${runs}`});
         }
         const sortedArray = percentageArray.sort((a, b) => {
             const keyA = new Date(a.percentage);
