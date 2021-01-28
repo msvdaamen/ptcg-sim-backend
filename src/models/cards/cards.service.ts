@@ -133,7 +133,7 @@ export class CardsService {
         };
     }
 
-    async sell(userId: number, cardId: number, price: number): Promise<CardEntity> {
+    async placeOrder(userId: number, cardId: number, price: number): Promise<CardEntity> {
         const {affected} = await this.userHasCardRepository
             .createQueryBuilder('userHasCard')
             .where('userHasCard.userId = :userId AND userHasCard.cardId = :cardId', {userId, cardId})

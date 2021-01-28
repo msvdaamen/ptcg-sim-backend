@@ -62,7 +62,7 @@ export class CardsResolver {
         @Args('cardId', {type: () => Int}) cardId: number,
         @Args('price', {type: () => Int}) price: number
     ) {
-        return this.cardsService.sell(user.id, cardId, price);
+        return this.cardsService.placeOrder(user.id, cardId, price);
     }
 
     @ResolveField(() => ImageEntity, {nullable: true})
