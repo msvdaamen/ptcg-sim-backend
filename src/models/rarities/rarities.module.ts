@@ -4,6 +4,7 @@ import {RarityEntity} from "./entities/rarity.entity";
 import {RarityRepository} from "./rarity.repository";
 import {RaritiesService} from "./rarities.service";
 import {RaritiesResolver} from "./rarities.resolver";
+import {RarityDataLoader} from "./rarity.data-loader";
 
 @Module({
     imports: [
@@ -11,7 +12,8 @@ import {RaritiesResolver} from "./rarities.resolver";
     ],
     providers: [
         RaritiesService,
-        RaritiesResolver
+        RaritiesResolver,
+        RarityDataLoader
     ]
 })
 export class RaritiesModule {

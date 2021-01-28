@@ -50,8 +50,9 @@ export class AuthService {
     login(user: UserEntity): AuthUser {
         const payload = {id: user.id, email: user.email};
         return {
-            id: user.id,
-            email: user.email,
+            ...user,
+            // @ts-ignore
+            password: undefined,
             accessToken: this.jwtService.sign(payload),
         };
     }

@@ -37,4 +37,12 @@ export class AuthResolver {
         }
         return this.authService.register(email, password);
     }
+
+    @UseGuards(JwtAuthGuard)
+    @Query(() => UserEntity)
+    me(
+        @CurrentUser() user: UserEntity
+    ) {
+        return user;
+    }
 }

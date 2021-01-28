@@ -1,4 +1,4 @@
-import {Args, Parent, Query, ResolveField, Resolver} from "@nestjs/graphql";
+import {Args, Int, Parent, Query, ResolveField, Resolver} from "@nestjs/graphql";
 import {UseGuards} from "@nestjs/common";
 import {CardEntity} from "./entities/card.entity";
 import {CardsService} from "./cards.service";
@@ -30,6 +30,22 @@ export class CardsResolver {
         return this.cardsService.cardsPaginated(page, amount, cardFilter);
     }
 
+    @Query(() => CardEntity)
+    card(
+        @Args('id', {type: () => Int}) cardId: number
+    ) {
+        return this.cardsService.card(cardId);
+    }
+
+    @Query(() => CardPaginationModel)
+    myCards(
+        @CurrentUser() user: UserEntity,
+        @Args('filter', {nullable: true}) cardFilter: CardFilterInput,
+        @Args('pagination') {page, amount}: PaginationArgs
+    ): Promise<CardPaginationModel> {
+        return this.cardsService.myCards(user.id, page, amount, cardFilter);
+    }
+
     @ResolveField(() => ImageEntity, {nullable: true})
     image(
         @Parent() card: CardEntity
@@ -49,13 +65,6 @@ export class CardsResolver {
         @Parent() card: CardEntity
     ) {
         return this.cardsDataLoader.rarity.load(card.id);
-    }
-
-    @Query(() => [CardEntity])
-    myCards(
-        @CurrentUser() user: UserEntity
-    ) {
-        return this.cardsService.myCards(user.id);
     }
 
     @ResolveField(() => Boolean)
