@@ -79,14 +79,6 @@ export interface PaginationModel {
     totalPages: number;
 }
 
-export interface OrderEntity {
-    id: number;
-    userId: number;
-    cardId: number;
-    price: number;
-    createdAt: DateTime;
-}
-
 export interface CardPaginationModel {
     cards: CardEntity[];
     pagination: PaginationModel;
@@ -95,6 +87,14 @@ export interface CardPaginationModel {
 export interface CardQuickSellModel {
     card: CardEntity;
     value: number;
+}
+
+export interface OrderEntity {
+    id: number;
+    userId: number;
+    cardId: number;
+    price: number;
+    createdAt: DateTime;
 }
 
 export interface CardTypeEntity {

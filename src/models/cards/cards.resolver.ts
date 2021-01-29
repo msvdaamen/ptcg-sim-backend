@@ -27,9 +27,9 @@ export class CardsResolver {
     @Query(() => CardPaginationModel)
     cardsPaginated(
         @Args('filter', {nullable: true}) cardFilter: CardFilterInput,
-        @Args('pagination') {page, amount}: PaginationArgs
+        @Args('pagination') pagination: PaginationArgs
     ): Promise<CardPaginationModel> {
-        return this.cardsService.cardsPaginated(page, amount, cardFilter);
+        return this.cardsService.cardsPaginated(pagination, cardFilter);
     }
 
     @Query(() => CardEntity)
@@ -43,9 +43,9 @@ export class CardsResolver {
     myCards(
         @CurrentUser() user: UserEntity,
         @Args('filter', {nullable: true}) cardFilter: CardFilterInput,
-        @Args('pagination') {page, amount}: PaginationArgs
+        @Args('pagination') pagination: PaginationArgs
     ): Promise<CardPaginationModel> {
-        return this.cardsService.myCards(user.id, page, amount, cardFilter);
+        return this.cardsService.myCards(user.id, pagination, cardFilter);
     }
 
     @Mutation(() => CardQuickSellModel)

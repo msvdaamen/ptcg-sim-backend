@@ -1,15 +1,19 @@
 import {Injectable} from "@nestjs/common";
-import {PokemonTypeRepository} from "./pokemon-type.repository";
+import {QueryBus} from "@nestjs/cqrs";
+import {FindPokemonTypesQuery} from "./queries/find-all/find-pokemon-types.query";
+import {PokemonTypeEntity} from "./entities/pokemon-type.entity";
 
 @Injectable()
 export class PokemonTypesService {
 
     constructor(
-        private readonly pokemonTypeRepository: PokemonTypeRepository
+        private queryBus: QueryBus
     ) {
     }
 
-    all() {
-        return this.pokemonTypeRepository.find();
+    all(): Promise<PokemonTypeEntity[]> {
+        return this.queryBus.execute(
+            new FindPokemonTypesQuery()
+        );
     }
 }

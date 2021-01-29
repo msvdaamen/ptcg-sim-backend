@@ -14,6 +14,7 @@ import {CardTypesModule} from "./models/card-types/card-types.module";
 import {PokemonTypesModule} from "./models/pokemon-types/pokemon-types.module";
 import {PackOpeningModule} from "./models/pack-opening/pack-opening.module";
 import {ExchangeModule} from "./models/exchange/exchange.module";
+import {CqrsModule} from "@nestjs/cqrs";
 
 
 @Module({
@@ -33,6 +34,7 @@ import {ExchangeModule} from "./models/exchange/exchange.module";
     ConfigModule.forRoot({
       isGlobal: true
     }),
+    CqrsModule,
     AuthModule,
     UsersModule,
     CardsModule,

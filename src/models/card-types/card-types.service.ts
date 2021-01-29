@@ -1,15 +1,19 @@
 import {Injectable} from "@nestjs/common";
-import {CardTypeRepository} from "./card-type.repository";
+import {QueryBus} from "@nestjs/cqrs";
+import {FindCardTypesQuery} from "./queries/find-all/find-card-types.query";
+import {CardTypeEntity} from "./entities/card-type.entity";
 
 @Injectable()
 export class CardTypesService {
 
     constructor(
-        private readonly cardTypeRepository: CardTypeRepository
+        private readonly queryBus: QueryBus
     ) {
     }
 
-    all() {
-        return this.cardTypeRepository.find();
+    all(): Promise<CardTypeEntity[]> {
+        return this.queryBus.execute(
+            new FindCardTypesQuery()
+        );
     }
 }

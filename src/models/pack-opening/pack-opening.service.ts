@@ -1,72 +1,20 @@
 import {Injectable} from "@nestjs/common";
-import {CardRepository} from "../cards/card.repository";
-import {RarityRepository} from "../rarities/rarity.repository";
-import {UserHasCardRepository} from "../users/user-has-card.repository";
-import {CardEntity} from "../cards/entities/card.entity";
-import {UserHasCardEntity} from "../users/entities/user-has-card.entity";
 import {NumberUtil} from "../../common/helpers/number.util";
+import {CommandBus} from "@nestjs/cqrs";
+import {OpenPackCommand} from "./commands/open-pack/open-pack.command";
 
 @Injectable()
 export class PackOpeningService {
 
     constructor(
-        private readonly cardRepository: CardRepository,
-        private readonly userHasCardRepository: UserHasCardRepository,
-        private readonly rarityRepository: RarityRepository
+        private readonly commandBus: CommandBus
     ) {
     }
 
-    async open(userId: number) {
-        const rarities = await this.rarityRepository
-            .createQueryBuilder('rarities')
-            .orderBy('rarities.weight', 'ASC')
-            .getMany();
-
-        const totalWeight = rarities.reduce((weight, rarity) => {
-            weight += rarity.weight;
-            return weight;
-        }, 0);
-
-        const lootTable = new Array(totalWeight);
-
-        let currentIndex = 0;
-        rarities.forEach((rarity) => {
-            for (let i = 0; i < rarity.weight; i++) {
-                lootTable[currentIndex] = rarity.id;
-                currentIndex++;
-            }
-        });
-
-        const cardTypes: {[rarityId: number]: number} = {};
-        for (let i = 0; i < 12; i++) {
-            const randomIndex = NumberUtil.randomBetween(0, lootTable.length - 1);
-            const rarity = lootTable[randomIndex];
-            if (!cardTypes.hasOwnProperty(rarity)) {
-                cardTypes[rarity] = 0;
-            }
-            cardTypes[rarity]++;
-        }
-
-        const cardQueries = Object.entries(cardTypes).map(([rarityId, amount]) => {
-            return this.cardRepository.createQueryBuilder('cards')
-                .where('cards.rarityId = :rarityId', {rarityId})
-                .orderBy('RAND()')
-                .limit(amount)
-                .getMany();
-        });
-        const allCards = await Promise.all(cardQueries);
-
-        const cards: CardEntity[] = allCards.flat();
-        const userHasCards: UserHasCardEntity[] = [];
-        for (const card of cards) {
-            const uerHasCard = this.userHasCardRepository.create({
-                cardId: card.id,
-                userId
-            });
-            userHasCards.push(uerHasCard);
-        }
-        await this.userHasCardRepository.insert(userHasCards);
-        return cards;
+    open(userId: number) {
+        return this.commandBus.execute(
+            new OpenPackCommand(userId)
+        );
     }
 
     private changeCalculations(lootTable: any[], runs: number): {name: string, percentage: number, amount: number}[] {

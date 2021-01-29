@@ -1,61 +1,30 @@
 import {Injectable} from "@nestjs/common";
 import {OrderRepository} from "./order.repository";
-import {PaginationModel} from "../../../common/graphql/models/pagination.model";
 import {OrderPaginationModel} from "../../../common/graphql/models/order-pagination.model";
+import {QueryBus} from "@nestjs/cqrs";
+import {FindOrdersPaginatedQuery} from "./queries/find-order-paginated/find-orders-paginated.query";
+import {PaginationInterface} from "../../../common/interfaces/common/pagination.interface";
+import {MyOrdersPaginatedQuery} from "./queries/my-orders-paginated/my-orders-paginated.query";
 
 @Injectable()
 export class OrdersService {
 
     constructor(
+        private readonly queryBus: QueryBus,
         private readonly orderRepository: OrderRepository
     ) {
     }
 
-    async ordersPaginated(page: number, amount: number): Promise<OrderPaginationModel> {
-        const query = this.orderRepository
-            .createQueryBuilder('orders')
-            .orderBy('orders.expire_at', "ASC");
-        const [
-            orders,
-            total
-        ] = await Promise.all([
-            query.offset((page - 1) * amount).limit(amount).getMany(),
-            query.getCount()
-        ]);
-        const pagination = PaginationModel.create(
-            total,
-            amount,
-            page,
-            orders.length
+    ordersPaginated(pagination: PaginationInterface): Promise<OrderPaginationModel> {
+        return this.queryBus.execute(
+            new FindOrdersPaginatedQuery(pagination)
         );
-        return {
-            orders,
-            pagination
-        };
     }
 
-    async myOrdersPaginated(userId: number, page: number, amount: number) {
-        const query = this.orderRepository
-            .createQueryBuilder('orders')
-            .where('orders.userId = :userId', {userId})
-            .orderBy('orders.expire_at', "ASC");
-        const [
-            orders,
-            total
-        ] = await Promise.all([
-            query.offset((page - 1) * amount).limit(amount).getMany(),
-            query.getCount()
-        ]);
-        const pagination = PaginationModel.create(
-            total,
-            amount,
-            page,
-            orders.length
+    myOrdersPaginated(userId: number, pagination: PaginationInterface) {
+        return this.queryBus.execute(
+            new MyOrdersPaginatedQuery(userId, pagination)
         );
-        return {
-            orders,
-            pagination
-        };
     }
 
 }

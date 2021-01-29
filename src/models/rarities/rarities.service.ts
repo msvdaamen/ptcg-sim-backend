@@ -1,15 +1,19 @@
 import {Injectable} from "@nestjs/common";
-import {RarityRepository} from "./rarity.repository";
+import {QueryBus} from "@nestjs/cqrs";
+import {FindRaritiesQuery} from "./query/find-all/find-rarities.query";
+import {RarityEntity} from "./entities/rarity.entity";
 
 @Injectable()
 export class RaritiesService {
 
     constructor(
-        private readonly rarityRepository: RarityRepository
+        private readonly queryBus: QueryBus
     ) {
     }
 
-    all() {
-        return this.rarityRepository.find();
+    all(): Promise<RarityEntity[]> {
+        return this.queryBus.execute(
+            new FindRaritiesQuery()
+        );
     }
 }

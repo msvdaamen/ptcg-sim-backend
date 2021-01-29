@@ -5,12 +5,20 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {CardRepository} from "../cards/card.repository";
 import {RarityRepository} from "../rarities/rarity.repository";
 import {UserHasCardRepository} from "../users/user-has-card.repository";
+import {CqrsModule} from "@nestjs/cqrs";
+import {OpenPackCommandHandler} from "./commands/open-pack/open-pack.command-handler";
+
+const commandHandlers = [
+    OpenPackCommandHandler
+];
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([CardRepository, RarityRepository, UserHasCardRepository])
+        TypeOrmModule.forFeature([CardRepository, RarityRepository, UserHasCardRepository]),
+        CqrsModule
     ],
     providers: [
+        ...commandHandlers,
         PackOpeningService,
         PackOpeningResolver
     ]
