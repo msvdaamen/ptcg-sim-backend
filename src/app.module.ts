@@ -15,21 +15,45 @@ import {PokemonTypesModule} from "./models/pokemon-types/pokemon-types.module";
 import {PackOpeningModule} from "./models/pack-opening/pack-opening.module";
 import {ExchangeModule} from "./models/exchange/exchange.module";
 import {CqrsModule} from "@nestjs/cqrs";
+import {PubSub} from "graphql-subscriptions";
+import {PubSubModule} from "./providers/pub-sub/pub-sub.module";
+import {JwtModule, JwtService} from "@nestjs/jwt";
+import {jwtConstants} from "./common/constants/jwt.constants";
 
 
 @Module({
   imports: [
     MysqlDatabaseProviderModule,
-    GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
-      definitions: {
-        path: join(process.cwd(), 'src/graphql.ts')
-      },
-      context: ({ req }) => ({ req }),
-      uploads: {
-        maxFileSize: 10000000, // 10 MB
-        maxFiles: 5,
-      }
+    GraphQLModule.forRootAsync({
+      imports: [
+        JwtModule.register({
+          secret: jwtConstants.secret,
+          signOptions: { expiresIn: '8h' },
+        })
+      ],
+      useFactory: async (jwtService: JwtService) => ({
+        autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
+        definitions: {
+          path: join(process.cwd(), 'src/graphql.ts')
+        },
+        context: ({ req, connection }) => ({ req, connection }),
+        uploads: {
+          maxFileSize: 10000000, // 10 MB
+          maxFiles: 5,
+        },
+        installSubscriptionHandlers: true,
+        subscriptions: {
+          onConnect: connectionParams => {
+            const authToken: string = ('authorization' in connectionParams)&& (connectionParams['authorization'] as string).split(' ')[1];
+            if (authToken) {
+              const payload = jwtService.decode(authToken);
+              return {currentUser: payload, headers: connectionParams}
+            }
+            throw new Error('authToken must be provided');
+          }
+        }
+      }),
+      inject: [JwtService]
     }),
     ConfigModule.forRoot({
       isGlobal: true
@@ -43,11 +67,13 @@ import {CqrsModule} from "@nestjs/cqrs";
     CardTypesModule,
     PokemonTypesModule,
     PackOpeningModule,
-    ExchangeModule
+    ExchangeModule,
+    PubSubModule
   ],
   providers: [
     AppService,
     AppResolver
+
   ],
 })
 export class AppModule {}

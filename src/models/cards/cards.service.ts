@@ -14,6 +14,7 @@ import {FindCardsPaginatedQuery} from "./queries/find-all-paginated/find-cards-p
 import {FindOneCardQuery} from "./queries/find-one/find-one-card.query";
 import {MyCardsQuery} from "./queries/my-cards/my-cards.query";
 import {CreateOrderCommand} from "../exchange/orders/commands/create-order/create-order.command";
+import {QuickSellCommand} from "./commands/quick-sell/quick-sell.command";
 
 @Injectable()
 export class CardsService {
@@ -45,35 +46,9 @@ export class CardsService {
     }
 
     async quickSell(userId: number, cardId: number, amount: number): Promise<CardQuickSellModel> {
-        const value = 1;
-        const [
-            {affected},
-            card
-        ] = await Promise.all([
-            this.userHasCardRepository
-                .createQueryBuilder('userHasCard')
-                .where('userHasCard.userId = :userId AND userHasCard.cardId = :cardId', {userId, cardId})
-                .limit(amount)
-                .delete()
-                .execute(),
-            this.cardRepository.findOne({id: cardId})
-        ]);
-        if (!affected) {
-            throw new HttpException('No cards are sold',  HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        const coins = value * affected;
-        await getConnection().transaction(async manager => {
-            const user = await manager.findOne(UserEntity, {id: userId});
-            const newBalance = manager.create(UserEntity, {
-                ...user,
-                balance: user.balance + coins
-            })
-            await manager.save(newBalance);
-        });
-        return {
-            card,
-            value: coins
-        };
+        return this.commandBus.execute(
+            new QuickSellCommand(userId, cardId, amount)
+        );
     }
 
     async placeOrder(userId: number, cardId: number, price: number): Promise<CardEntity> {

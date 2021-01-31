@@ -12,7 +12,7 @@ export default class CreateOrdersTable extends Migration {
             table.unsignedInteger('card_id');
             table.unsignedInteger('price');
             table.timestamp('created_at').useCurrent();
-            table.timestamp('expire_date');
+            table.dateTime('expire_date');
         });
     }
 

@@ -48,7 +48,7 @@ export class CardsResolver {
         return this.cardsService.myCards(user.id, pagination, cardFilter);
     }
 
-    @Mutation(() => CardQuickSellModel)
+    @Mutation(() => CardEntity)
     quickSellCard(
         @CurrentUser() user: UserEntity,
         @Args('cardInfo') {cardId, amount}: QuickSellCardInput

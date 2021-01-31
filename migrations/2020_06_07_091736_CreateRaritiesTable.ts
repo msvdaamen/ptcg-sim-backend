@@ -9,6 +9,7 @@ export default class CreateRaritiesTable extends Migration {
         await Schema.create('rarities', (table: Blueprint) => {
             table.id();
             table.string('name').unique();
+            table.unsignedMediumInteger('weight').default(100);
         });
     }
 

@@ -18,16 +18,20 @@ export class QuickSellCommandHandler implements ICommandHandler<QuickSellCommand
 
     async execute({userId, cardId, amount}: QuickSellCommand): Promise<CardEntity> {
         const value = 1;
+        const cards = await this.userHasCardRepository.createQueryBuilder('userHasCard')
+            .select(['userHasCard.id as id'])
+            .where('userHasCard.userId = :userId AND userHasCard.cardId = :cardId', {userId, cardId})
+            .limit(amount)
+            .getRawMany();
+        const ids = cards.map(card => card.id);
+        if (!ids.length) {
+            throw new HttpException('No cards are sold',  HttpStatus.UNPROCESSABLE_ENTITY);
+        }
         const [
             {affected},
             card
         ] = await Promise.all([
-            this.userHasCardRepository
-                .createQueryBuilder('userHasCard')
-                .where('userHasCard.userId = :userId AND userHasCard.cardId = :cardId', {userId, cardId})
-                .limit(amount)
-                .delete()
-                .execute(),
+            this.userHasCardRepository.delete(ids),
             this.cardRepository.findOne({id: cardId})
         ]);
         if (!affected) {

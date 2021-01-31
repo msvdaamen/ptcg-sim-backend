@@ -35,6 +35,7 @@ export interface QuickSellCardInput {
 export interface UserEntity {
     id: number;
     email: string;
+    balance: number;
 }
 
 export interface ImageEntity {
@@ -84,11 +85,6 @@ export interface CardPaginationModel {
     pagination: PaginationModel;
 }
 
-export interface CardQuickSellModel {
-    card: CardEntity;
-    value: number;
-}
-
 export interface OrderEntity {
     id: number;
     userId: number;
@@ -128,9 +124,13 @@ export interface IQuery {
 export interface IMutation {
     login(loginCredentials: LoginInput): AuthUser | Promise<AuthUser>;
     register(registerCredentials: RegisterInput): AuthUser | Promise<AuthUser>;
-    quickSellCard(cardInfo: QuickSellCardInput): CardQuickSellModel | Promise<CardQuickSellModel>;
+    quickSellCard(cardInfo: QuickSellCardInput): CardEntity | Promise<CardEntity>;
     sellCard(price: number, cardId: number): CardEntity | Promise<CardEntity>;
     openPack(): CardEntity[] | Promise<CardEntity[]>;
+}
+
+export interface ISubscription {
+    balanceChanged(): number | Promise<number>;
 }
 
 export type DateTime = any;

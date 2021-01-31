@@ -5,6 +5,7 @@
 type UserEntity {
   id: Int!
   email: String!
+  balance: Float!
 }
 
 type ImageEntity {
@@ -52,11 +53,6 @@ type PaginationModel {
 type CardPaginationModel {
   cards: [CardEntity!]!
   pagination: PaginationModel!
-}
-
-type CardQuickSellModel {
-  card: CardEntity!
-  value: Int!
 }
 
 type OrderEntity {
@@ -113,7 +109,7 @@ input CardFilterInput {
 type Mutation {
   login(loginCredentials: LoginInput!): AuthUser!
   register(registerCredentials: RegisterInput!): AuthUser!
-  quickSellCard(cardInfo: QuickSellCardInput!): CardQuickSellModel!
+  quickSellCard(cardInfo: QuickSellCardInput!): CardEntity!
   sellCard(price: Int!, cardId: Int!): CardEntity!
   openPack: [CardEntity!]!
 }
@@ -132,4 +128,8 @@ input RegisterInput {
 input QuickSellCardInput {
   cardId: Int!
   amount: Int!
+}
+
+type Subscription {
+  balanceChanged: Int!
 }
