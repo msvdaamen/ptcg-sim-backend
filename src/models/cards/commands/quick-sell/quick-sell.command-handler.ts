@@ -17,7 +17,6 @@ export class QuickSellCommandHandler implements ICommandHandler<QuickSellCommand
     }
 
     async execute({userId, cardId, amount}: QuickSellCommand): Promise<CardEntity> {
-        const value = 1;
         const cards = await this.userHasCardRepository.createQueryBuilder('userHasCard')
             .select(['userHasCard.id as id'])
             .where('userHasCard.userId = :userId AND userHasCard.cardId = :cardId', {userId, cardId})
@@ -32,12 +31,12 @@ export class QuickSellCommandHandler implements ICommandHandler<QuickSellCommand
             card
         ] = await Promise.all([
             this.userHasCardRepository.delete(ids),
-            this.cardRepository.findOne({id: cardId})
+            this.cardRepository.findOne({id: cardId}, {relations: ['rarity']})
         ]);
         if (!affected) {
             throw new HttpException('No cards are sold',  HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        const coins = value * affected;
+        const coins = card.rarity.value * affected;
         this.eventBus.publish(
             new UserSoldCardEvent(userId, coins)
         );

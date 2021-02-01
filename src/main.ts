@@ -7,8 +7,6 @@ import * as compression from 'compression';
 import {WinstonModule} from 'nest-winston';
 import * as winston from 'winston';
 
-
-
 const options: NestApplicationOptions = {
 
 }
@@ -22,11 +20,10 @@ if (process.env.ENVIRONMENT !== 'development') {
   })
 }
 
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, options);
   app.enableCors();
-  app.use(helmet());
+  // app.use(helmet());
   app.use(compression());
   app.use(
       rateLimit({

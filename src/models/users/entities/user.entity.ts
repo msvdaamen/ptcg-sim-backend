@@ -1,5 +1,6 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Field, Int, ObjectType} from "@nestjs/graphql";
+import {OrderEntity} from "../../exchange/orders/entities/order.entity";
 
 @ObjectType()
 @Entity({name: 'users'})
@@ -19,4 +20,7 @@ export class UserEntity {
     @Field()
     @Column()
     balance: number;
+
+    @ManyToOne(() => OrderEntity, order => order.user)
+    orders: OrderEntity[];
 }

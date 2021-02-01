@@ -13,6 +13,9 @@ export default class CreateOrdersTable extends Migration {
             table.unsignedInteger('price');
             table.timestamp('created_at').useCurrent();
             table.dateTime('expire_date');
+
+            table.foreign('user_id').references('id').on('users').onDelete('cascade');
+            table.foreign('card_id').references('id').on('cards').onDelete('cascade');
         });
     }
 

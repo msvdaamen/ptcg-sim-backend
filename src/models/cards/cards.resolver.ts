@@ -56,15 +56,6 @@ export class CardsResolver {
         return this.cardsService.quickSell(user.id, cardId, amount);
     }
 
-    @Mutation(() => CardEntity)
-    sellCard(
-        @CurrentUser() user: UserEntity,
-        @Args('cardId', {type: () => Int}) cardId: number,
-        @Args('price', {type: () => Int}) price: number
-    ) {
-        return this.cardsService.placeOrder(user.id, cardId, price);
-    }
-
     @ResolveField(() => ImageEntity, {nullable: true})
     image(
         @Parent() card: CardEntity

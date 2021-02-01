@@ -1,5 +1,6 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Field, Int, ObjectType} from "@nestjs/graphql";
+import {UserEntity} from "../../../users/entities/user.entity";
 
 @ObjectType()
 @Entity('orders')
@@ -27,4 +28,8 @@ export class OrderEntity {
 
     @Column({name: 'expire_date'})
     expireDate: Date;
+
+    @OneToMany(() => UserEntity, user => user.orders)
+    @JoinColumn({name: 'user_id'})
+    user: UserEntity;
 }

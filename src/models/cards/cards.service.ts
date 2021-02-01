@@ -1,19 +1,15 @@
-import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
+import {Injectable} from "@nestjs/common";
 import {CardRepository} from "./card.repository";
 import {CardPaginationModel} from "../../common/graphql/models/card-pagination.model";
 import {UserHasCardRepository} from "../users/user-has-card.repository";
 import {CardQuickSellModel} from "./models/card-quick-sell.model";
-import {OrderRepository} from "../exchange/orders/order.repository";
 import {CardEntity} from "./entities/card.entity";
-import {getConnection} from "typeorm";
-import {UserEntity} from "../users/entities/user.entity";
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
 import {PaginationInterface} from "../../common/interfaces/common/pagination.interface";
 import {CardFilterInterface} from "../../common/interfaces/cards/card-filter.interface";
 import {FindCardsPaginatedQuery} from "./queries/find-all-paginated/find-cards-paginated.query";
 import {FindOneCardQuery} from "./queries/find-one/find-one-card.query";
 import {MyCardsQuery} from "./queries/my-cards/my-cards.query";
-import {CreateOrderCommand} from "../exchange/orders/commands/create-order/create-order.command";
 import {QuickSellCommand} from "./commands/quick-sell/quick-sell.command";
 
 @Injectable()
@@ -48,12 +44,6 @@ export class CardsService {
     async quickSell(userId: number, cardId: number, amount: number): Promise<CardQuickSellModel> {
         return this.commandBus.execute(
             new QuickSellCommand(userId, cardId, amount)
-        );
-    }
-
-    async placeOrder(userId: number, cardId: number, price: number): Promise<CardEntity> {
-        return this.commandBus.execute(
-            new CreateOrderCommand(userId, cardId, price)
         );
     }
 

@@ -32,6 +32,19 @@ export interface QuickSellCardInput {
     amount: number;
 }
 
+export interface CreateOrderInput {
+    cardId: number;
+    price: number;
+}
+
+export interface OrderEntity {
+    id: number;
+    userId: number;
+    cardId: number;
+    price: number;
+    createdAt: DateTime;
+}
+
 export interface UserEntity {
     id: number;
     email: string;
@@ -48,6 +61,7 @@ export interface ImageEntity {
 export interface RarityEntity {
     id: number;
     name: string;
+    value: number;
     totalCards: number;
     cardsOwned: number;
 }
@@ -85,14 +99,6 @@ export interface CardPaginationModel {
     pagination: PaginationModel;
 }
 
-export interface OrderEntity {
-    id: number;
-    userId: number;
-    cardId: number;
-    price: number;
-    createdAt: DateTime;
-}
-
 export interface CardTypeEntity {
     id: number;
     name: string;
@@ -125,8 +131,10 @@ export interface IMutation {
     login(loginCredentials: LoginInput): AuthUser | Promise<AuthUser>;
     register(registerCredentials: RegisterInput): AuthUser | Promise<AuthUser>;
     quickSellCard(cardInfo: QuickSellCardInput): CardEntity | Promise<CardEntity>;
-    sellCard(price: number, cardId: number): CardEntity | Promise<CardEntity>;
     openPack(): CardEntity[] | Promise<CardEntity[]>;
+    createOrder(order: CreateOrderInput): CardEntity | Promise<CardEntity>;
+    cancelOrder(orderId: number): boolean | Promise<boolean>;
+    buyOrder(orderId: number): boolean | Promise<boolean>;
 }
 
 export interface ISubscription {

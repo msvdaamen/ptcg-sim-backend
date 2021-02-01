@@ -3,7 +3,7 @@ import {Migration, Blueprint, Schema} from 'migrationjs';
 
 export default class CreateOrderSuccessTable extends Migration {
 
-    tableName = 'order_success';
+    tableName = 'orders_success';
 
     async up() {
         await Schema.create(this.tableName, (table) => {

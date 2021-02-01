@@ -10,19 +10,22 @@ import {CardRepository} from "../../cards/card.repository";
 import {UserHasCardRepository} from "../../users/user-has-card.repository";
 import {FindOrdersPaginatedQueryHandler} from "./queries/find-order-paginated/find-orders-paginated.query-handler";
 import {MyOrdersPaginatedQueryHandler} from "./queries/my-orders-paginated/my-orders-paginated.query-handler";
+import {CancelOrderCommandHandler} from "./commands/cancel-order/cancel-order.command-handler";
+import {UserRepository} from "../../users/user.repository";
 
 const commandHandlers = [
-    CreateOrderCommandHandler
+    CreateOrderCommandHandler,
+    CancelOrderCommandHandler
 ];
 
 const queryHandlers = [
-  FindOrdersPaginatedQueryHandler,
+    FindOrdersPaginatedQueryHandler,
     MyOrdersPaginatedQueryHandler
 ];
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([OrderEntity, OrderRepository, CardRepository, UserHasCardRepository]),
+        TypeOrmModule.forFeature([OrderEntity, OrderRepository, CardRepository, UserHasCardRepository, UserRepository]),
         CqrsModule
     ],
     providers: [
