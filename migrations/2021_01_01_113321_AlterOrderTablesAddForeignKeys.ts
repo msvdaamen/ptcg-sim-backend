@@ -8,7 +8,7 @@ export default class AlterOrderTablesAddForeignKeys extends Migration {
             table.foreign('user_id').references('id').on('users').onDelete('cascade');
             table.foreign('card_id').references('id').on('cards').onDelete('cascade');
         });
-        await Schema.table('orders_success', (table) => {
+        await Schema.table('order_success', (table) => {
             table.foreign('user_id').references('id').on('users').onDelete('cascade');
             table.foreign('card_id').references('id').on('cards').onDelete('cascade');
         });

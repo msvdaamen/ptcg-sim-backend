@@ -38,6 +38,7 @@ export class CardEntity {
     @Column({name: 'ability_id', nullable: true})
     abilityId: number;
 
+    @Field(() => Int)
     @Column({name: 'rarity_id'})
     rarityId: number;
 

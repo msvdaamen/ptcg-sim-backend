@@ -68,6 +68,7 @@ export interface RarityEntity {
 
 export interface CardEntity {
     id: number;
+    rarityId: number;
     name: string;
     hp?: string;
     number?: string;

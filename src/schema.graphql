@@ -38,6 +38,7 @@ type RarityEntity {
 
 type CardEntity {
   id: Int!
+  rarityId: Int!
   name: String!
   hp: String
   number: String

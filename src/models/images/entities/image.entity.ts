@@ -19,9 +19,12 @@ export class ImageEntity {
     @Column()
     filename: string;
 
-    @Field()
+    // @Field()
     @Column()
     url: string;
+
+    @Column({name: 'has_downloaded'})
+    hasDownloaded: boolean;
 
     @OneToMany(() => CardEntity, card => card.image)
     card: CardEntity[];

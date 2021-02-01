@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Field, Int, ObjectType} from "@nestjs/graphql";
 import {OrderEntity} from "../../exchange/orders/entities/order.entity";
 
@@ -21,6 +21,6 @@ export class UserEntity {
     @Column()
     balance: number;
 
-    @ManyToOne(() => OrderEntity, order => order.user)
+    @OneToMany(() => OrderEntity, order => order.user)
     orders: OrderEntity[];
 }

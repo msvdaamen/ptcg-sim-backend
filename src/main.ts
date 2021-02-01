@@ -6,6 +6,7 @@ import * as rateLimit from 'express-rate-limit';
 import * as compression from 'compression';
 import {WinstonModule} from 'nest-winston';
 import * as winston from 'winston';
+import {NestExpressApplication} from "@nestjs/platform-express";
 
 const options: NestApplicationOptions = {
 
@@ -21,17 +22,11 @@ if (process.env.ENVIRONMENT !== 'development') {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, options);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, options);
   app.enableCors();
   // app.use(helmet());
   app.use(compression());
-  app.use(
-      rateLimit({
-        windowMs: 60 * 1000, // 1 minutes
-        max: 100, // limit each IP to 100 requests per windowMs
-      }),
-  );
-
+  app.set('trust proxy', 1);
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(3005);
 }
