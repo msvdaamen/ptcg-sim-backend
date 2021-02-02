@@ -2,26 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type OrderEntity {
-  id: Int!
-  userId: Int!
-  cardId: Int!
-  price: Int!
-  createdAt: DateTime!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type UserEntity {
-  id: Int!
-  email: String!
-  balance: Float!
-  stats: UserStatsEntity!
-}
-
 type ImageEntity {
   id: Int!
   name: String!
@@ -37,6 +17,20 @@ type RarityEntity {
   cardsOwned: Int!
 }
 
+type OrderSuccessEntity {
+  id: Int!
+  userId: Int!
+  cardId: Int!
+  price: Int!
+  createdAt: DateTime!
+  card: CardEntity!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type CardEntity {
   id: Int!
   rarityId: Int!
@@ -50,6 +44,22 @@ type CardEntity {
   rarity: RarityEntity!
   hasCard: Boolean!
   amount: Float!
+}
+
+type OrderEntity {
+  id: Int!
+  userId: Int!
+  cardId: Int!
+  price: Int!
+  createdAt: DateTime!
+  card: CardEntity!
+}
+
+type UserEntity {
+  id: Int!
+  email: String!
+  balance: Float!
+  stats: UserStatsEntity!
 }
 
 type UserStatsEntity {
@@ -102,6 +112,7 @@ type Query {
   pokemonTypes: [PokemonTypeEntity!]!
   orders(pagination: PaginationArgs!): OrderPaginationModel!
   myOrders(pagination: PaginationArgs!): OrderPaginationModel!
+  myOrderSuccess: [OrderSuccessEntity!]!
 }
 
 input PaginationArgs {

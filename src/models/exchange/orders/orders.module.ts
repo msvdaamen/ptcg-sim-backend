@@ -14,6 +14,7 @@ import {CancelOrderCommandHandler} from "./commands/cancel-order/cancel-order.co
 import {UserRepository} from "../../users/user.repository";
 import {OrdersSaga} from "./orders.saga";
 import {BuyOrderCommandHandler} from "./commands/buy-order/buy-order.command-handler";
+import {OrderDataLoader} from "./order.data-loader";
 
 const commandHandlers = [
     CreateOrderCommandHandler,
@@ -36,7 +37,8 @@ const queryHandlers = [
         ...queryHandlers,
         OrdersService,
         OrdersResolver,
-        OrdersSaga
+        OrdersSaga,
+        OrderDataLoader
     ]
 })
 export class OrdersModule {}

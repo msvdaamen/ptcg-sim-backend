@@ -1,4 +1,4 @@
-import {Args, Int, Mutation, Query, Resolver} from "@nestjs/graphql";
+import {Args, Int, Mutation, Parent, Query, ResolveField, Resolver} from "@nestjs/graphql";
 import {OrderEntity} from "./entities/order.entity";
 import {OrdersService} from "./orders.service";
 import {UseGuards} from "@nestjs/common";
@@ -9,13 +9,15 @@ import {PaginationArgs} from "../../../common/graphql/args/pagination.args";
 import {UserEntity} from "../../users/entities/user.entity";
 import {CreateOrderInput} from "./input/create-order.input";
 import {CardEntity} from "../../cards/entities/card.entity";
+import {OrderDataLoader} from "./order.data-loader";
 
 @UseGuards(JwtAuthGuard)
 @Resolver(OrderEntity)
 export class OrdersResolver {
 
     constructor(
-        private readonly ordersService: OrdersService
+        private readonly ordersService: OrdersService,
+        private readonly orderDataLoader: OrderDataLoader
     ) {
     }
 
@@ -57,5 +59,12 @@ export class OrdersResolver {
         @Args('orderId', {type: () => Int}) orderId: number
     ) {
         return this.ordersService.buy(user.id, orderId);
+    }
+
+    @ResolveField(() => CardEntity)
+    card(
+        @Parent() order: OrderEntity
+    ) {
+        return this.orderDataLoader.card.load(order.id);
     }
 }

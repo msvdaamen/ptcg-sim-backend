@@ -37,21 +37,6 @@ export interface CreateOrderInput {
     price: number;
 }
 
-export interface OrderEntity {
-    id: number;
-    userId: number;
-    cardId: number;
-    price: number;
-    createdAt: DateTime;
-}
-
-export interface UserEntity {
-    id: number;
-    email: string;
-    balance: number;
-    stats: UserStatsEntity;
-}
-
 export interface ImageEntity {
     id: number;
     name: string;
@@ -67,6 +52,15 @@ export interface RarityEntity {
     cardsOwned: number;
 }
 
+export interface OrderSuccessEntity {
+    id: number;
+    userId: number;
+    cardId: number;
+    price: number;
+    createdAt: DateTime;
+    card: CardEntity;
+}
+
 export interface CardEntity {
     id: number;
     rarityId: number;
@@ -80,6 +74,22 @@ export interface CardEntity {
     rarity: RarityEntity;
     hasCard: boolean;
     amount: number;
+}
+
+export interface OrderEntity {
+    id: number;
+    userId: number;
+    cardId: number;
+    price: number;
+    createdAt: DateTime;
+    card: CardEntity;
+}
+
+export interface UserEntity {
+    id: number;
+    email: string;
+    balance: number;
+    stats: UserStatsEntity;
 }
 
 export interface UserStatsEntity {
@@ -132,6 +142,7 @@ export interface IQuery {
     pokemonTypes(): PokemonTypeEntity[] | Promise<PokemonTypeEntity[]>;
     orders(pagination: PaginationArgs): OrderPaginationModel | Promise<OrderPaginationModel>;
     myOrders(pagination: PaginationArgs): OrderPaginationModel | Promise<OrderPaginationModel>;
+    myOrderSuccess(): OrderSuccessEntity[] | Promise<OrderSuccessEntity[]>;
 }
 
 export interface IMutation {

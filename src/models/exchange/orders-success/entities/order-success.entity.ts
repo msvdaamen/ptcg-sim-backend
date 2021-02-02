@@ -1,5 +1,6 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Field, Int, ObjectType} from "@nestjs/graphql";
+import {CardEntity} from "../../../cards/entities/card.entity";
 
 @ObjectType()
 @Entity('orders_success')
@@ -24,4 +25,8 @@ export class OrderSuccessEntity {
     @Field(() => Date)
     @CreateDateColumn({name: 'created_at'})
     createdAt: Date;
+
+    @ManyToOne(() => CardEntity, card => card.orderSuccess)
+    @JoinColumn({name: 'card_id'})
+    card: CardEntity;
 }

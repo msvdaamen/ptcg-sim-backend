@@ -1,7 +1,9 @@
-import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Field, Int, ObjectType} from "@nestjs/graphql";
 import {ImageEntity} from "../../images/entities/image.entity";
 import {RarityEntity} from "../../rarities/entities/rarity.entity";
+import {OrderSuccessEntity} from "../../exchange/orders-success/entities/order-success.entity";
+import {OrderEntity} from "../../exchange/orders/entities/order.entity";
 
 @ObjectType()
 @Entity('cards')
@@ -78,4 +80,10 @@ export class CardEntity {
     @ManyToOne(() => ImageEntity, image => image.hresCard)
     @JoinColumn({name: 'hres_image_id'})
     imageHRes: ImageEntity;
+
+    @OneToMany(() => OrderSuccessEntity, order => order.card)
+    orderSuccess: OrderSuccessEntity[];
+
+    @OneToMany(() => OrderEntity, order => order.card)
+    order: OrderEntity[];
 }
