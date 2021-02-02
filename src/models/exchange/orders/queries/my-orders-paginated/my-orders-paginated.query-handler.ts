@@ -15,7 +15,7 @@ export class MyOrdersPaginatedQueryHandler implements IQueryHandler<MyOrdersPagi
         const query = this.orderRepository
             .createQueryBuilder('orders')
             .where('orders.userId = :userId', {userId})
-            .orderBy('orders.expire_at', "ASC");
+            .orderBy('orders.expire_date', "ASC");
         const [
             orders,
             total

@@ -3,7 +3,11 @@ import {BuyOrderCommand} from "./buy-order.command";
 import {OrderRepository} from "../../order.repository";
 import {UserRepository} from "../../../../users/user.repository";
 import {HttpException, HttpStatus} from "@nestjs/common";
-import {UserBoughtCardEvent} from "../../../../users/events/user-bought-card/user-bought-card.event";
+import {getConnection} from "typeorm";
+import {UserBalanceChangedEvent} from "../../../../users/events/user-balance-changed/user-balance-changed.event";
+import {UserHasCardEntity} from "../../../../users/entities/user-has-card.entity";
+import {OrderEntity} from "../../entities/order.entity";
+import {OrderSoldEvent} from "../../events/order-sold/order-sold.event";
 
 @CommandHandler(BuyOrderCommand)
 export class BuyOrderCommandHandler implements ICommandHandler<BuyOrderCommand> {
@@ -16,19 +20,34 @@ export class BuyOrderCommandHandler implements ICommandHandler<BuyOrderCommand> 
     }
 
     async execute({userId, orderId}: BuyOrderCommand): Promise<any> {
-        const [order, user] = await Promise.all([
-            this.orderRepository.findOne(orderId),
+        const [order, buyer] = await Promise.all([
+            this.orderRepository.findOne(orderId, {relations: ['user']}),
             this.userRepository.findOne(userId)
         ]);
-        if (!order || !user) {
+        const seller = order.user
+        if (!order || !buyer) {
             throw new HttpException('Order does not exist', HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        if (user.balance < order.price) {
+        if (buyer.balance < order.price) {
             throw new HttpException('Users balance is to low', HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        this.eventBus.publish(
-            new UserBoughtCardEvent(order.cardId, order.userId, userId)
-        )
+        await getConnection().transaction(async manager => {
+            seller.balance += order.price;
+            buyer.balance -= order.price;
+            const userHasCard = manager.create(UserHasCardEntity, {
+                userId: buyer.id,
+                cardId: order.cardId
+            });
+            await Promise.all([
+                manager.save([buyer, seller, userHasCard]),
+                manager.delete(OrderEntity, {id: order.id})
+            ]);
+        });
+        this.eventBus.publishAll([
+            new UserBalanceChangedEvent(seller.id, seller.balance),
+            new UserBalanceChangedEvent(buyer.id, buyer.balance),
+            new OrderSoldEvent(order, buyer.id, seller.id)
+        ]);
     }
 
 }

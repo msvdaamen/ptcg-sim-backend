@@ -12,10 +12,13 @@ import {FindOrdersPaginatedQueryHandler} from "./queries/find-order-paginated/fi
 import {MyOrdersPaginatedQueryHandler} from "./queries/my-orders-paginated/my-orders-paginated.query-handler";
 import {CancelOrderCommandHandler} from "./commands/cancel-order/cancel-order.command-handler";
 import {UserRepository} from "../../users/user.repository";
+import {OrdersSaga} from "./orders.saga";
+import {BuyOrderCommandHandler} from "./commands/buy-order/buy-order.command-handler";
 
 const commandHandlers = [
     CreateOrderCommandHandler,
-    CancelOrderCommandHandler
+    CancelOrderCommandHandler,
+    BuyOrderCommandHandler
 ];
 
 const queryHandlers = [
@@ -32,7 +35,8 @@ const queryHandlers = [
         ...commandHandlers,
         ...queryHandlers,
         OrdersService,
-        OrdersResolver
+        OrdersResolver,
+        OrdersSaga
     ]
 })
 export class OrdersModule {}

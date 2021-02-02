@@ -11,10 +11,11 @@ export class FindOrdersPaginatedQueryHandler implements IQueryHandler<FindOrders
     ) {
     }
 
-    async execute({pagination: {page, amount}}: FindOrdersPaginatedQuery): Promise<any> {
+    async execute({userId, pagination: {page, amount}}: FindOrdersPaginatedQuery): Promise<any> {
         const query = this.orderRepository
             .createQueryBuilder('orders')
-            .orderBy('orders.expire_at', "ASC");
+            .where('orders.userId <> :userId', {userId})
+            .orderBy('orders.expire_date', "ASC");
         const [
             orders,
             total

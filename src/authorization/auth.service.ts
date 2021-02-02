@@ -5,6 +5,7 @@ import {UserRepository} from "../models/users/user.repository";
 import {UserEntity} from "../models/users/entities/user.entity";
 import {AuthUser} from "../common/models/auth-user";
 import {CardRepository} from "../models/cards/card.repository";
+import {UserStatsRepository} from "../models/users/repositories/user-stats.repository";
 
 @Injectable()
 export class AuthService {
@@ -12,6 +13,7 @@ export class AuthService {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly cardRepository: CardRepository,
+        private readonly userStatsRepository: UserStatsRepository,
         private jwtService: JwtService
     ) {
     }
@@ -23,6 +25,13 @@ export class AuthService {
         }
         const correct = await bcrypt.compare(password, user.password);
         if (correct) {
+            const userStatsCount = await this.userStatsRepository.count({userId: user.id});
+            if (userStatsCount === 0) {
+                const stats = this.userStatsRepository.create({
+                    userId: user.id
+                });
+                await this.userStatsRepository.save(stats);
+            }
             return user;
         }
         return null;

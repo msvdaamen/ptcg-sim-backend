@@ -21,9 +21,10 @@ export class OrdersResolver {
 
     @Query(() => OrderPaginationModel)
     orders(
+        @CurrentUser() user: UserEntity,
         @Args('pagination') paginationArgs: PaginationArgs
     ) {
-        return this.ordersService.ordersPaginated(paginationArgs);
+        return this.ordersService.ordersPaginated(user.id, paginationArgs);
     }
 
     @Query(() => OrderPaginationModel)

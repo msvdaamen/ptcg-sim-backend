@@ -8,9 +8,14 @@ import {UserSaga} from "./user.saga";
 import {AddCoinsToUserCommandHandler} from "./commands/add-coins/add-coins-to-user.command-handler";
 import {UserResolver} from "./user.resolver";
 import {UserBalanceChangedEventHandler} from "./events/user-balance-changed/user-balance-changed.event-handler";
+import {AddUserOpenedPackAmountCommandHandler} from "./commands/add-user-opened-pack-amount/add-user-opened-pack-amount.command-handler";
+import {UserStatsEntity} from "./entities/user-stats.entity";
+import {UserStatsRepository} from "./repositories/user-stats.repository";
+import {UserDataLoader} from "./user.data-loader";
 
 const commandHandlers = [
-    AddCoinsToUserCommandHandler
+    AddCoinsToUserCommandHandler,
+    AddUserOpenedPackAmountCommandHandler
 ];
 
 const eventHandlers = [
@@ -19,12 +24,13 @@ const eventHandlers = [
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([UserEntity, UserRepository, UserHasCardEntity]),
+        TypeOrmModule.forFeature([UserEntity, UserStatsEntity, UserRepository, UserHasCardEntity, UserStatsRepository]),
         CqrsModule
     ],
     providers: [
         ...commandHandlers,
         ...eventHandlers,
+        UserDataLoader,
         UserSaga,
         UserResolver
     ]

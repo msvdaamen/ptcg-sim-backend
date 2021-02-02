@@ -49,6 +49,7 @@ export interface UserEntity {
     id: number;
     email: string;
     balance: number;
+    stats: UserStatsEntity;
 }
 
 export interface ImageEntity {
@@ -79,6 +80,11 @@ export interface CardEntity {
     rarity: RarityEntity;
     hasCard: boolean;
     amount: number;
+}
+
+export interface UserStatsEntity {
+    userId: string;
+    packsOpened: number;
 }
 
 export interface AuthUser {

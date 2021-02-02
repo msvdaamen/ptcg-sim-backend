@@ -1,4 +1,4 @@
-import {CommandHandler, ICommandHandler} from "@nestjs/cqrs";
+import {CommandHandler, EventBus, ICommandHandler} from "@nestjs/cqrs";
 import {OpenPackCommand} from "./open-pack.command";
 import {CardEntity} from "../../../cards/entities/card.entity";
 import {UserHasCardEntity} from "../../../users/entities/user-has-card.entity";
@@ -7,6 +7,7 @@ import {CardRepository} from "../../../cards/card.repository";
 import {UserHasCardRepository} from "../../../users/user-has-card.repository";
 import {NormalPack} from "../../../../common/models/packs/normal.pack";
 import {PackType} from "../../../../common/models/packs/pack";
+import {UserOpenedPackEvent} from "../../../cards/events/user-opened-pack/user-opened-pack.event";
 
 @CommandHandler(OpenPackCommand)
 export class OpenPackCommandHandler implements ICommandHandler<OpenPackCommand> {
@@ -14,7 +15,8 @@ export class OpenPackCommandHandler implements ICommandHandler<OpenPackCommand> 
     constructor(
         private readonly rarityRepository: RarityRepository,
         private readonly cardRepository: CardRepository,
-        private readonly userHasCardRepository: UserHasCardRepository
+        private readonly userHasCardRepository: UserHasCardRepository,
+        private readonly eventBus: EventBus
     ) {
     }
 
@@ -41,6 +43,9 @@ export class OpenPackCommandHandler implements ICommandHandler<OpenPackCommand> 
             userHasCards.push(uerHasCard);
         }
         await this.userHasCardRepository.insert(userHasCards);
+        this.eventBus.publish(
+            new UserOpenedPackEvent(userId)
+        );
         return cards;
     }
 

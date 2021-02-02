@@ -19,6 +19,7 @@ type UserEntity {
   id: Int!
   email: String!
   balance: Float!
+  stats: UserStatsEntity!
 }
 
 type ImageEntity {
@@ -49,6 +50,11 @@ type CardEntity {
   rarity: RarityEntity!
   hasCard: Boolean!
   amount: Float!
+}
+
+type UserStatsEntity {
+  userId: ID!
+  packsOpened: Int!
 }
 
 type AuthUser {

@@ -8,10 +8,11 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {UserEntity} from "../models/users/entities/user.entity";
 import {UserRepository} from "../models/users/user.repository";
 import {CardRepository} from "../models/cards/card.repository";
+import {UserStatsRepository} from "../models/users/repositories/user-stats.repository";
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([UserEntity, UserRepository, CardRepository]),
+        TypeOrmModule.forFeature([UserEntity, UserRepository, CardRepository, UserStatsRepository]),
         JwtModule.register({
             secret: jwtConstants.secret,
             signOptions: { expiresIn: '8h' },

@@ -17,9 +17,9 @@ export class OrdersService {
     ) {
     }
 
-    ordersPaginated(pagination: PaginationInterface): Promise<OrderPaginationModel> {
+    ordersPaginated(userId: number, pagination: PaginationInterface): Promise<OrderPaginationModel> {
         return this.queryBus.execute(
-            new FindOrdersPaginatedQuery(pagination)
+            new FindOrdersPaginatedQuery(userId, pagination)
         );
     }
 
