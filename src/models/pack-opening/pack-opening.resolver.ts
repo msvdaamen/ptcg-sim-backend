@@ -1,4 +1,4 @@
-import {Mutation, Resolver} from "@nestjs/graphql";
+import {Args, Int, Mutation, Resolver} from "@nestjs/graphql";
 import {PackOpeningService} from "./pack-opening.service";
 import {CardEntity} from "../cards/entities/card.entity";
 import {UseGuards} from "@nestjs/common";
@@ -17,8 +17,9 @@ export class PackOpeningResolver {
 
     @Mutation(() => [CardEntity])
     openPack(
-        @CurrentUser() user: UserEntity
+        @CurrentUser() user: UserEntity,
+        @Args('packId', {type: () => Int, nullable: true}) cardId: number
     ) {
-        return this.packOpeningService.open(user.id);
+        return this.packOpeningService.open(user.id, cardId);
     }
 }

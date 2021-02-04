@@ -19,6 +19,7 @@ import {PubSub} from "graphql-subscriptions";
 import {PubSubModule} from "./providers/pub-sub/pub-sub.module";
 import {JwtModule, JwtService} from "@nestjs/jwt";
 import {jwtConstants} from "./common/constants/jwt.constants";
+import {PacksModule} from "./models/packs/packs.module";
 
 
 @Module({
@@ -68,7 +69,8 @@ import {jwtConstants} from "./common/constants/jwt.constants";
     PokemonTypesModule,
     PackOpeningModule,
     ExchangeModule,
-    PubSubModule
+    PubSubModule,
+    PacksModule
   ],
   providers: [
     AppService,

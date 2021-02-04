@@ -1,7 +1,7 @@
 enum PackTypes {
     COMMON = 'common',
     UNCOMMON = 'uncommon',
-    REVERSE_HOLO = 'reverseHolo',
+    HOLO = 'reverseHolo',
     RARES = 'rares'
 }
 
@@ -16,7 +16,7 @@ export abstract class Pack {
     types: Types = {
         COMMON: [1],
         UNCOMMON: [2],
-        REVERSE_HOLO: [4, 5, 8, 11, 20, 21],
+        HOLO: [4, 5, 8, 11, 20, 21],
         RARES: [3, 6, 7, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 22]
     };
 

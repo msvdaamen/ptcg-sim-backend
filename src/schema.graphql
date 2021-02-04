@@ -96,6 +96,13 @@ type PokemonTypeEntity {
   name: String!
 }
 
+type PackEntity {
+  id: Int!
+  title: String!
+  description: String
+  price: Int!
+}
+
 type OrderPaginationModel {
   orders: [OrderEntity!]!
   pagination: PaginationModel!
@@ -113,6 +120,7 @@ type Query {
   orders(pagination: PaginationArgs!): OrderPaginationModel!
   myOrders(pagination: PaginationArgs!): OrderPaginationModel!
   myOrderSuccess: [OrderSuccessEntity!]!
+  packs: [PackEntity!]!
 }
 
 input PaginationArgs {
@@ -129,7 +137,7 @@ type Mutation {
   login(loginCredentials: LoginInput!): AuthUser!
   register(registerCredentials: RegisterInput!): AuthUser!
   quickSellCard(cardInfo: QuickSellCardInput!): CardEntity!
-  openPack: [CardEntity!]!
+  openPack(packId: Int): [CardEntity!]!
   createOrder(order: CreateOrderInput!): CardEntity!
   cancelOrder(orderId: Int!): Boolean!
   buyOrder(orderId: Int!): Boolean!

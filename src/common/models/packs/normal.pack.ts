@@ -17,7 +17,7 @@ export class NormalPack extends Pack {
         return {
             COMMON: this.commonAmount,
             UNCOMMON: this.uncommonAmount,
-            REVERSE_HOLO: 1,
+            HOLO: 1,
             RARES: 1
         }
     }

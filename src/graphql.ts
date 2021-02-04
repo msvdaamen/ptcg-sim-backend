@@ -126,6 +126,13 @@ export interface PokemonTypeEntity {
     name: string;
 }
 
+export interface PackEntity {
+    id: number;
+    title: string;
+    description?: string;
+    price: number;
+}
+
 export interface OrderPaginationModel {
     orders: OrderEntity[];
     pagination: PaginationModel;
@@ -143,13 +150,14 @@ export interface IQuery {
     orders(pagination: PaginationArgs): OrderPaginationModel | Promise<OrderPaginationModel>;
     myOrders(pagination: PaginationArgs): OrderPaginationModel | Promise<OrderPaginationModel>;
     myOrderSuccess(): OrderSuccessEntity[] | Promise<OrderSuccessEntity[]>;
+    packs(): PackEntity[] | Promise<PackEntity[]>;
 }
 
 export interface IMutation {
     login(loginCredentials: LoginInput): AuthUser | Promise<AuthUser>;
     register(registerCredentials: RegisterInput): AuthUser | Promise<AuthUser>;
     quickSellCard(cardInfo: QuickSellCardInput): CardEntity | Promise<CardEntity>;
-    openPack(): CardEntity[] | Promise<CardEntity[]>;
+    openPack(packId?: number): CardEntity[] | Promise<CardEntity[]>;
     createOrder(order: CreateOrderInput): CardEntity | Promise<CardEntity>;
     cancelOrder(orderId: number): boolean | Promise<boolean>;
     buyOrder(orderId: number): boolean | Promise<boolean>;
