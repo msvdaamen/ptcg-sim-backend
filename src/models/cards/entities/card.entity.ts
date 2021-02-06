@@ -48,6 +48,10 @@ export class CardEntity {
     @Column()
     name: string;
 
+    @Field()
+    @Column()
+    price: number;
+
     @Field({nullable: true})
     @Column({nullable: true})
     hp: string;

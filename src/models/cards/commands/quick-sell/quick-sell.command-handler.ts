@@ -1,4 +1,4 @@
-import {CommandHandler, EventBus, EventPublisher, ICommandHandler} from "@nestjs/cqrs";
+import {CommandHandler, EventBus, ICommandHandler} from "@nestjs/cqrs";
 import {QuickSellCommand} from "./quick-sell.command";
 import {HttpException, HttpStatus} from "@nestjs/common";
 import {UserHasCardRepository} from "../../../users/user-has-card.repository";
@@ -31,12 +31,12 @@ export class QuickSellCommandHandler implements ICommandHandler<QuickSellCommand
             card
         ] = await Promise.all([
             this.userHasCardRepository.delete(ids),
-            this.cardRepository.findOne({id: cardId}, {relations: ['rarity']})
+            this.cardRepository.findOne({id: cardId})
         ]);
         if (!affected) {
             throw new HttpException('No cards are sold',  HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        const coins = card.rarity.value * affected;
+        const coins = card.price * affected;
         this.eventBus.publish(
             new UserSoldCardEvent(userId, coins)
         );

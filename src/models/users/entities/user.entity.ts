@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Field, Int, ObjectType} from "@nestjs/graphql";
 import {OrderEntity} from "../../exchange/orders/entities/order.entity";
 

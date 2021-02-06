@@ -1,5 +1,5 @@
-import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
+import {Module} from '@nestjs/common';
+import {AppService} from './app.service';
 import {GraphQLModule} from "@nestjs/graphql";
 import {join} from 'path';
 import {ConfigModule} from "@nestjs/config";
@@ -15,7 +15,6 @@ import {PokemonTypesModule} from "./models/pokemon-types/pokemon-types.module";
 import {PackOpeningModule} from "./models/pack-opening/pack-opening.module";
 import {ExchangeModule} from "./models/exchange/exchange.module";
 import {CqrsModule} from "@nestjs/cqrs";
-import {PubSub} from "graphql-subscriptions";
 import {PubSubModule} from "./providers/pub-sub/pub-sub.module";
 import {JwtModule, JwtService} from "@nestjs/jwt";
 import {jwtConstants} from "./common/constants/jwt.constants";

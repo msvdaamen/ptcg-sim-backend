@@ -1,4 +1,4 @@
-import {IEventHandler, IQueryHandler, QueryHandler} from "@nestjs/cqrs";
+import {IQueryHandler, QueryHandler} from "@nestjs/cqrs";
 import {FindRaritiesQuery} from "./find-rarities.query";
 import {RarityRepository} from "../../rarity.repository";
 

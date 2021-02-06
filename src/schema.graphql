@@ -12,7 +12,6 @@ type ImageEntity {
 type RarityEntity {
   id: Int!
   name: String!
-  value: Int!
   totalCards: Int!
   cardsOwned: Int!
 }
@@ -35,6 +34,7 @@ type CardEntity {
   id: Int!
   rarityId: Int!
   name: String!
+  price: Float!
   hp: String
   number: String
   nationalPokedexNumber: Float

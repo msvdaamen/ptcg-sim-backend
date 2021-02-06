@@ -1,8 +1,6 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import {NestFactory} from '@nestjs/core';
+import {AppModule} from './app.module';
 import {NestApplicationOptions, ValidationPipe} from "@nestjs/common";
-import * as helmet from 'helmet';
-import * as rateLimit from 'express-rate-limit';
 import * as compression from 'compression';
 import {WinstonModule} from 'nest-winston';
 import * as winston from 'winston';

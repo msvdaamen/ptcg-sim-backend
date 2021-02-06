@@ -47,7 +47,6 @@ export interface ImageEntity {
 export interface RarityEntity {
     id: number;
     name: string;
-    value: number;
     totalCards: number;
     cardsOwned: number;
 }
@@ -65,6 +64,7 @@ export interface CardEntity {
     id: number;
     rarityId: number;
     name: string;
+    price: number;
     hp?: string;
     number?: string;
     nationalPokedexNumber?: number;

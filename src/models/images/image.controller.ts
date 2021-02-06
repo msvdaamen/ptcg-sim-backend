@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpException, Param, Res} from "@nestjs/common";
+import {Controller, Get, HttpException, Param, Res} from "@nestjs/common";
 import {ImageRepository} from "./image.repository";
 import * as request from 'request';
 import * as fs from 'fs';

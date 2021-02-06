@@ -12,7 +12,6 @@ import {CurrentUser} from "../../common/decorators/current-user";
 import {UserEntity} from "../users/entities/user.entity";
 import {RarityEntity} from "../rarities/entities/rarity.entity";
 import {QuickSellCardInput} from "./inputs/quick-sell-card.input";
-import {CardQuickSellModel} from "./models/card-quick-sell.model";
 
 @UseGuards(JwtAuthGuard)
 @Resolver(CardEntity)

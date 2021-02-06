@@ -2,7 +2,6 @@ import {Injectable, Scope} from "@nestjs/common";
 import * as DataLoader from "dataloader";
 import {CardEntity} from "../../cards/entities/card.entity";
 import {getRepository} from "typeorm";
-import {OrderSuccessEntity} from "../orders-success/entities/order-success.entity";
 import {DataLoaderHelper} from "../../../common/helpers/data-loader.helper";
 import {OrderEntity} from "./entities/order.entity";
 

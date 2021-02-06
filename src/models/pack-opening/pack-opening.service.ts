@@ -1,5 +1,4 @@
 import {Injectable} from "@nestjs/common";
-import {NumberUtil} from "../../common/helpers/number.util";
 import {CommandBus} from "@nestjs/cqrs";
 import {OpenPackCommand} from "./commands/open-pack/open-pack.command";
 

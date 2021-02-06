@@ -5,7 +5,7 @@ import {CardRepository} from "../../../../cards/card.repository";
 import {UserHasCardRepository} from "../../../../users/user-has-card.repository";
 import {OrderRepository} from "../../order.repository";
 import {OrderCreatedEvent} from "../../events/order-created.event";
-import { format, addHours } from 'date-fns'
+import {addHours, format} from 'date-fns'
 
 @CommandHandler(CreateOrderCommand)
 export class CreateOrderCommandHandler implements ICommandHandler<CreateOrderCommand> {

@@ -14,10 +14,6 @@ export class RarityEntity {
     @Column()
     name: string;
 
-    @Field(() => Int)
-    @Column()
-    value: number;
-
     @OneToMany(() => CardEntity, card => card.rarity)
     cards: CardEntity[];
 }

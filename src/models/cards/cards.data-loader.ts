@@ -6,7 +6,6 @@ import {CardEntity} from "./entities/card.entity";
 import {DataLoaderHelper} from "../../common/helpers/data-loader.helper";
 import {UserHasCardEntity} from "../users/entities/user-has-card.entity";
 import {RarityEntity} from "../rarities/entities/rarity.entity";
-import {RarityRepository} from "../rarities/rarity.repository";
 
 @Injectable({
     scope: Scope.REQUEST

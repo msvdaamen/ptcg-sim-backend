@@ -3,7 +3,7 @@ import * as DataLoader from "dataloader";
 import {getRepository} from "typeorm";
 import {RarityEntity} from "./entities/rarity.entity";
 import {CardEntity} from "../cards/entities/card.entity";
-import {DataLoaderHelper} from "../../common/helpers/data-loader.helper";;
+import {DataLoaderHelper} from "../../common/helpers/data-loader.helper";
 
 @Injectable({
     scope: Scope.REQUEST

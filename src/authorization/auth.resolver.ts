@@ -4,7 +4,6 @@ import {AuthUser} from "../common/models/auth-user";
 import {LoginInput} from "./input/login.input";
 import {UnauthorizedException, UseGuards} from "@nestjs/common";
 import {RegisterInput} from "./input/register.input";
-import {CardEntity} from "../models/cards/entities/card.entity";
 import {JwtAuthGuard} from "../common/guards/jwt-auth.guard";
 import {CurrentUser} from "../common/decorators/current-user";
 import {UserEntity} from "../models/users/entities/user.entity";
