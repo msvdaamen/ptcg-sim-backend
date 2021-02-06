@@ -10,6 +10,7 @@ export default class CreateUsersTable extends Migration {
             table.id();
             table.string('email');
             table.string('password');
+            table.double('balance', 15, 2).default(0).after('password');
         });
     }
 

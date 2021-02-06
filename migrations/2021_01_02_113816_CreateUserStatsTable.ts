@@ -1,7 +1,7 @@
 import {Migration, Blueprint, Schema} from 'migrationjs';
 
 
-export default class MakeUserStatsTable extends Migration {
+export default class CreateUserStatsTable extends Migration {
 
     tableName = 'user_stats';
 

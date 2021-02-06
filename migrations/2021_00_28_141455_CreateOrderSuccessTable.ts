@@ -12,6 +12,9 @@ export default class CreateOrderSuccessTable extends Migration {
             table.unsignedInteger('card_id');
             table.unsignedInteger('price');
             table.timestamp('created_at').useCurrent();
+
+            table.foreign('user_id').references('id').on('users').onDelete('cascade');
+            table.foreign('card_id').references('id').on('cards').onDelete('cascade');
         });
     }
 
