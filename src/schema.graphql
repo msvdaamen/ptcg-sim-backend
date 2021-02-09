@@ -20,7 +20,7 @@ type OrderSuccessEntity {
   id: Int!
   userId: Int!
   cardId: Int!
-  price: Int!
+  price: Float!
   createdAt: DateTime!
   card: CardEntity!
 }
@@ -39,8 +39,8 @@ type CardEntity {
   number: String
   nationalPokedexNumber: Float
   description: String
-  image: ImageEntity
-  imageHRes: ImageEntity
+  smallImage: ImageEntity
+  largeImage: ImageEntity
   rarity: RarityEntity!
   hasCard: Boolean!
   amount: Float!
@@ -50,7 +50,7 @@ type OrderEntity {
   id: Int!
   userId: Int!
   cardId: Int!
-  price: Int!
+  price: Float!
   createdAt: DateTime!
   card: CardEntity!
 }
@@ -161,9 +161,9 @@ input QuickSellCardInput {
 
 input CreateOrderInput {
   cardId: Int!
-  price: Int!
+  price: Float!
 }
 
 type Subscription {
-  balanceChanged: Int!
+  balanceChanged: Float!
 }

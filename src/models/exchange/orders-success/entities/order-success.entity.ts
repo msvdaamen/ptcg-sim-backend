@@ -1,5 +1,5 @@
 import {Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
-import {Field, Int, ObjectType} from "@nestjs/graphql";
+import {Field, Float, Int, ObjectType} from "@nestjs/graphql";
 import {CardEntity} from "../../../cards/entities/card.entity";
 
 @ObjectType()
@@ -18,7 +18,7 @@ export class OrderSuccessEntity {
     @Column({name: 'card_id'})
     cardId: number;
 
-    @Field(() => Int)
+    @Field(() => Float)
     @Column()
     price: number;
 

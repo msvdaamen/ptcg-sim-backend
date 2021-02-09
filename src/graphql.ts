@@ -69,8 +69,8 @@ export interface CardEntity {
     number?: string;
     nationalPokedexNumber?: number;
     description?: string;
-    image?: ImageEntity;
-    imageHRes?: ImageEntity;
+    smallImage?: ImageEntity;
+    largeImage?: ImageEntity;
     rarity: RarityEntity;
     hasCard: boolean;
     amount: number;

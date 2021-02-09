@@ -1,4 +1,4 @@
-import {Int, Parent, ResolveField, Resolver, Subscription} from "@nestjs/graphql";
+import {Float, Int, Parent, ResolveField, Resolver, Subscription} from "@nestjs/graphql";
 import {UserEntity} from "./entities/user.entity";
 import {Inject, UseGuards} from "@nestjs/common";
 import {PubSub} from "graphql-subscriptions";
@@ -24,7 +24,7 @@ export class UserResolver {
         return this.userDataLoader.userStats.load(user.id);
     }
 
-    @Subscription(() => Int, {
+    @Subscription(() => Float, {
         filter: (payload, variables, context) => subscriptionUserCheck(context, payload.userId),
         resolve: payload => payload.balance
     })

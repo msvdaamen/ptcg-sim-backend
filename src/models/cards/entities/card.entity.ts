@@ -16,20 +16,17 @@ export class CardEntity {
     @Column({name: 'custom_id'})
     customId: string;
 
-    @Column({name: 'image_id', nullable: true})
-    imageId: number;
+    @Column({name: 'small_image_id', nullable: true})
+    smallImageId: number;
 
-    @Column({name: 'hres_image_id', nullable: true})
-    hresImageId: number;
+    @Column({name: 'large_image_id', nullable: true})
+    largeImageId: number;
 
     @Column({name: 'card_set_id'})
     cardSetId: number;
 
     @Column({name: 'artist_id', nullable: true})
     artistId: number;
-
-    @Column({name: 'series_id'})
-    seriesId: number;
 
     @Column({name: 'subtype_id', nullable: true})
     subtypeId: number;
@@ -78,12 +75,12 @@ export class CardEntity {
     rarity: RarityEntity;
 
     @ManyToOne(() => ImageEntity, image => image.card)
-    @JoinColumn({name: 'image_id'})
-    image: ImageEntity;
+    @JoinColumn({name: 'small_image_id'})
+    smallImage: ImageEntity;
 
-    @ManyToOne(() => ImageEntity, image => image.hresCard)
-    @JoinColumn({name: 'hres_image_id'})
-    imageHRes: ImageEntity;
+    @ManyToOne(() => ImageEntity, image => image.largeCard)
+    @JoinColumn({name: 'large_image_id'})
+    largeImage: ImageEntity;
 
     @OneToMany(() => OrderSuccessEntity, order => order.card)
     orderSuccess: OrderSuccessEntity[];

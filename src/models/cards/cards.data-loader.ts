@@ -57,13 +57,13 @@ export class CardsDataLoader {
     private createImageDataLoader() {
         this._imageDataLoader = new DataLoader<number, ImageEntity>(async (cardsId: number[]) => {
             const cards = await getRepository(CardEntity).createQueryBuilder('cards')
-                .leftJoinAndSelect('cards.image', 'image')
+                .leftJoinAndSelect('cards.smallImage', 'smallImage')
                 .where('cards.id IN(:...ids)', {ids: cardsId})
                 .getMany();
             const cardToImage = DataLoaderHelper.createMap<number, ImageEntity>();
             for (const card of cards) {
-                if (card.image) {
-                    cardToImage.add(card.id, card.image);
+                if (card.smallImage) {
+                    cardToImage.add(card.id, card.smallImage);
                 }
             }
             return cardToImage.getAll(cardsId);
@@ -73,13 +73,13 @@ export class CardsDataLoader {
     private createHResImageDataLoader() {
         this._imageHResDataLoader = new DataLoader<number, ImageEntity>(async (cardsId: number[]) => {
             const cards = await getRepository(CardEntity).createQueryBuilder('cards')
-                .leftJoinAndSelect('cards.imageHRes', 'imageHRes')
+                .leftJoinAndSelect('cards.largeImage', 'largeImage')
                 .where('cards.id IN(:...ids)', {ids: cardsId})
                 .getMany();
             const cardToImage = DataLoaderHelper.createMap<number, ImageEntity>();
             for (const card of cards) {
-                if (card.imageHRes) {
-                    cardToImage.add(card.id, card.imageHRes);
+                if (card.largeImage) {
+                    cardToImage.add(card.id, card.largeImage);
                 }
             }
             return cardToImage.getAll(cardsId);

@@ -56,14 +56,14 @@ export class CardsResolver {
     }
 
     @ResolveField(() => ImageEntity, {nullable: true})
-    image(
+    smallImage(
         @Parent() card: CardEntity
     ): Promise<ImageEntity> {
         return this.cardsDataLoader.image.load(card.id);
     }
 
     @ResolveField(() => ImageEntity, {nullable: true})
-    imageHRes(
+    largeImage(
         @Parent() card: CardEntity
     ): Promise<ImageEntity> {
         return this.cardsDataLoader.imageHRes.load(card.id);

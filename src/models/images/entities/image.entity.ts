@@ -26,9 +26,9 @@ export class ImageEntity {
     @Column({name: 'has_downloaded'})
     hasDownloaded: boolean;
 
-    @OneToMany(() => CardEntity, card => card.image)
+    @OneToMany(() => CardEntity, card => card.smallImage)
     card: CardEntity[];
 
-    @OneToMany(() => CardEntity, card => card.image)
-    hresCard: CardEntity[];
+    @OneToMany(() => CardEntity, card => card.largeImage)
+    largeCard: CardEntity[];
 }
