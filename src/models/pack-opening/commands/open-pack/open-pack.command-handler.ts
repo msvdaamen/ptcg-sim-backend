@@ -29,20 +29,21 @@ export class OpenPackCommandHandler implements ICommandHandler<OpenPackCommand> 
             const result = await this.packRepository.findOne({id: packId});
             if (result) {
                 pack = new CustomPack(result.common, result.uncommon, result.holo, result.rare);
-            } else {
-                pack = new NormalPack();
             }
-        } else {
+        }
+        if (!pack) {
             pack = new NormalPack();
         }
 
-        const cardQueries = Object.entries(pack.packRate).filter(([type, amount]) => !!amount).map(([type, amount]: [PackType, number]) => {
-            const ids = pack.getIds(type);
-            return this.cardRepository.createQueryBuilder('cards')
-                .where('cards.rarityId IN (:...ids)', {ids})
-                .orderBy('RAND()')
-                .limit(amount)
-                .getMany();
+        const cardQueries = Object.entries(pack.packRate)
+            .filter(([, amount]) => !!amount)
+            .map(([type, amount]: [PackType, number]) => {
+                const ids = pack.getIds(type);
+                return this.cardRepository.createQueryBuilder('cards')
+                    .where('cards.rarityId IN (:...ids)', {ids})
+                    .orderBy('RAND()')
+                    .limit(amount)
+                    .getMany();
         });
         const allCards = await Promise.all(cardQueries);
 

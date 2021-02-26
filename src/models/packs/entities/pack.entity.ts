@@ -1,5 +1,5 @@
 import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
-import {Field, Int, ObjectType} from "@nestjs/graphql";
+import {Field, Float, Int, ObjectType} from "@nestjs/graphql";
 
 @ObjectType()
 @Entity('packs')
@@ -17,7 +17,7 @@ export class PackEntity {
     @Column()
     description: string;
 
-    @Field(() => Int)
+    @Field(() => Float)
     @Column()
     price: number;
 

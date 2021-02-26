@@ -15,6 +15,7 @@ import {UserRepository} from "../../users/user.repository";
 import {OrdersSaga} from "./orders.saga";
 import {BuyOrderCommandHandler} from "./commands/buy-order/buy-order.command-handler";
 import {OrderDataLoader} from "./order.data-loader";
+import {FindOneOrderQueryHandler} from "./queries/find-one-order/find-one-order.query-handler";
 
 const commandHandlers = [
     CreateOrderCommandHandler,
@@ -24,7 +25,8 @@ const commandHandlers = [
 
 const queryHandlers = [
     FindOrdersPaginatedQueryHandler,
-    MyOrdersPaginatedQueryHandler
+    MyOrdersPaginatedQueryHandler,
+    FindOneOrderQueryHandler
 ];
 
 @Module({

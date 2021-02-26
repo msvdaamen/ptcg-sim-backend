@@ -7,6 +7,8 @@ import {MyOrdersPaginatedQuery} from "./queries/my-orders-paginated/my-orders-pa
 import {CreateOrderCommand} from "./commands/create-order/create-order.command";
 import {CancelOrderCommand} from "./commands/cancel-order/cancel.-order.command";
 import {BuyOrderCommand} from "./commands/buy-order/buy-order.command";
+import {OrderEntity} from "./entities/order.entity";
+import {FindOneOrderQuery} from "./queries/find-one-order/find-one-order.query";
 
 @Injectable()
 export class OrdersService {
@@ -26,6 +28,12 @@ export class OrdersService {
     myOrdersPaginated(userId: number, pagination: PaginationInterface) {
         return this.queryBus.execute(
             new MyOrdersPaginatedQuery(userId, pagination)
+        );
+    }
+
+    order(orderId: number): Promise<OrderEntity> {
+        return this.queryBus.execute(
+            new FindOneOrderQuery(orderId)
         );
     }
 

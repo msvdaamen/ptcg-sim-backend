@@ -148,6 +148,7 @@ export interface IQuery {
     cardTypes(): CardTypeEntity[] | Promise<CardTypeEntity[]>;
     pokemonTypes(): PokemonTypeEntity[] | Promise<PokemonTypeEntity[]>;
     orders(pagination: PaginationArgs): OrderPaginationModel | Promise<OrderPaginationModel>;
+    order(orderId: number): OrderEntity | Promise<OrderEntity>;
     myOrders(pagination: PaginationArgs): OrderPaginationModel | Promise<OrderPaginationModel>;
     myOrderSuccess(): OrderSuccessEntity[] | Promise<OrderSuccessEntity[]>;
     packs(): PackEntity[] | Promise<PackEntity[]>;

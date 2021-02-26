@@ -100,7 +100,7 @@ type PackEntity {
   id: Int!
   title: String!
   description: String
-  price: Int!
+  price: Float!
 }
 
 type OrderPaginationModel {
@@ -118,6 +118,7 @@ type Query {
   cardTypes: [CardTypeEntity!]!
   pokemonTypes: [PokemonTypeEntity!]!
   orders(pagination: PaginationArgs!): OrderPaginationModel!
+  order(orderId: Int!): OrderEntity!
   myOrders(pagination: PaginationArgs!): OrderPaginationModel!
   myOrderSuccess: [OrderSuccessEntity!]!
   packs: [PackEntity!]!

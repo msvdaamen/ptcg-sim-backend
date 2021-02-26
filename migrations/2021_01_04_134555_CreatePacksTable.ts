@@ -10,7 +10,7 @@ export default class CreatePacksTable extends Migration {
             table.id();
             table.string('title');
             table.text('description');
-            table.unsignedInteger('price')
+            table.double('price', 15,2)
             table.unsignedTinyInteger('common');
             table.unsignedTinyInteger('uncommon');
             table.unsignedTinyInteger('holo');
